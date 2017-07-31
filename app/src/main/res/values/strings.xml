@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Gerany</string>
+    <string name="facebook_application_id" translatable="false">159070707994934</string>
+    <string name="no_internet">There is no internet connection.</string>
+    <string name="unknown_error">Unknown error occur, please try again later.</string>
+    <string name="title_activity_test">testActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_post">Add New Post</string>
+    <string name="title_places">My Places</string>
+    <string name="title_add_place">Add New Place</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="add_new_place_text">Do you like to add your current place to your places list?</string>
+    <string name="add_new_place_button">Add To My Places</string>
+</resources>

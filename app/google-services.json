@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "382973834220",
+    "firebase_url": "https://geranyapp.firebaseio.com",
+    "project_id": "geranyapp",
+    "storage_bucket": "geranyapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382973834220:android:fd7697289a540633",
+        "android_client_info": {
+          "package_name": "com.shehabsalah.geranyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382973834220-nmfj9i4p7do5vl8npbjoh37g8akhfun7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shehabsalah.geranyapp",
+            "certificate_hash": "f4deed0a32baf274082954c9b81b928cd77fe67e"
+          }
+        },
+        {
+          "client_id": "382973834220-91gknipbgjk8tsib54fr3n7dl9rnnvba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNbTXCzoVvK6d1NVkri65Qfouo5Uo5HPI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382973834220-91gknipbgjk8tsib54fr3n7dl9rnnvba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
