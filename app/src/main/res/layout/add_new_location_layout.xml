@@ -7,17 +7,18 @@
     android:background="@color/appBackground"
     tools:context=".fragments.AddNewLocationFragment">
     <ImageView
+        android:id="@+id/add_new_location_icon"
         android:layout_width="@dimen/ground_icon_width_size"
         android:layout_height="@dimen/ground_icon_height_size"
         app:srcCompat="@drawable/ic_person_pin_circle"
-        android:id="@+id/imageView2"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="@dimen/shape_edge_padding"
-        app:layout_constraintBottom_toTopOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@+id/add_location_text" />
     <TextView
+        android:id="@+id/add_location_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/darkGray"
@@ -32,18 +33,18 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/textView"
         app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp" />
     <Button
+        android:id="@+id/add_to_places_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
         android:text="@string/add_new_place_button"
         android:textColor="@color/white_text_color"
         android:layout_marginTop="@dimen/shape_edge_padding"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_text"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"

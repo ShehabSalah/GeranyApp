@@ -1,6 +1,7 @@
 package com.shehabsalah.geranyapp.util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.widget.Toast;
 
 /**
@@ -29,5 +30,15 @@ public class Config {
      * */
     public static void toastLong(Context context,String message){
         Toast.makeText(context,message,Toast.LENGTH_LONG).show();
+    }
+
+    /***
+     * This method responsible on checking if the device connected with the internet or not.
+     * @param context The application context.
+     * @return (True) if the internet connected and (False) if the internet not connected.
+     */
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

@@ -11,5 +11,7 @@
     <string name="title_profile">Profile</string>
 
     <string name="add_new_place_text">Do you like to add your current place to your places list?</string>
+    <string name="no_signal_message">There is no internet connection :(</string>
+    <string name="current_place_exist">Your current place in your places list</string>
     <string name="add_new_place_button">Add To My Places</string>
 </resources>
