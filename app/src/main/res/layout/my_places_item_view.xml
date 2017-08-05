@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <RelativeLayout
+        android:id="@+id/my_places_item_holder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/shape_edge_padding">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/my_places_address_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/text_medium_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Home"/>
+            <TextView
+                android:id="@+id/my_places_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_normal_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Al Magd Street, 9th district, Al-Obour City, Cairo, Egypt."/>
+        </LinearLayout>
+
+        
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_margin="@dimen/shape_edge_padding"
+        app:srcCompat="@drawable/ic_mode_edit"
+        android:tint="@color/default_icon_color"
+        android:layout_gravity="center_vertical"
+        />
+    <ImageView
+        android:id="@+id/delete_active"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_marginEnd="@dimen/shape_edge_padding"
+        app:srcCompat="@drawable/ic_delete"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

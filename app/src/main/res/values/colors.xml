@@ -12,5 +12,10 @@
     <color name="strokeColor">#6e404040</color>
 
 
-    <color name="white_text_color">#fff</color>
+    <color name="white_color">#fff</color>
+    <color name="black_color">#000</color>
+    <color name="black_light_color">#46000000</color>
+
+    <color name="default_icon_color">#8a000000</color>
+    <color name="success_color">#91dc5a</color>
 </resources>

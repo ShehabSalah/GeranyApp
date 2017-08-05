@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".fragments.AddNewLocationFragment">
+    tools:context=".views.fragments.AddNewLocationFragment">
     <ImageView
         android:id="@+id/add_new_location_icon"
         android:layout_width="@dimen/ground_icon_width_size"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/darkGray"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="@dimen/text_large_size"
         android:paddingStart="@dimen/shape_edge_padding"
         android:paddingEnd="@dimen/shape_edge_padding"
         android:text="@string/add_new_place_text"
@@ -35,19 +35,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium"/>
     <Button
         android:id="@+id/add_to_places_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
         android:text="@string/add_new_place_button"
-        android:textColor="@color/white_text_color"
+        android:textColor="@color/white_color"
         android:layout_marginTop="@dimen/shape_edge_padding"
         app:layout_constraintTop_toBottomOf="@+id/add_location_text"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintHorizontal_bias="0.502"/>
 </android.support.constraint.ConstraintLayout>

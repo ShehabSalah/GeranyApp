@@ -1,4 +1,4 @@
-package com.shehabsalah.geranyapp.activities;
+package com.shehabsalah.geranyapp.views.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -16,15 +15,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
 import com.shehabsalah.geranyapp.R;
-import com.shehabsalah.geranyapp.fragments.AddNewLocationFragment;
-import com.shehabsalah.geranyapp.main.ApplicationMain;
+import com.shehabsalah.geranyapp.views.fragments.AddNewLocationDialogFragment;
+import com.shehabsalah.geranyapp.views.fragments.AddNewLocationFragment;
+import com.shehabsalah.geranyapp.views.fragments.MyPlacesListFragment;
+import com.shehabsalah.geranyapp.views.main.ApplicationMain;
 import com.shehabsalah.geranyapp.util.Config;
 
-public class MainActivity extends ApplicationMain {
+public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private UserInfo userInfo;
+    AddNewLocationFragment addNewLocationFragment;
+    MyPlacesListFragment myPlacesListFragment;
 
-    private TextView mTextMessage;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -32,32 +35,38 @@ public class MainActivity extends ApplicationMain {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+
                     return true;
-                case R.id.navigation_places:
-                    //ToDo: make the layout of places NOTE(must be recycler view) (#4)
+                case R.id.navigation_places: // TODO: IMPLEMENTATION PERIOD 1 DAY
                     //ToDo: make the layout of places items (#5)
                     //ToDo: make a fragment to view the places (#6)
                     //ToDo: display recycler view with 10 fake items (#7)
-                    mTextMessage.setText(R.string.title_places);
+
+                    //ToDo: add the MyPlacesListFragment fragment here (DESIGN #7)
+
+                    myPlacesListFragment = new MyPlacesListFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.home_container, myPlacesListFragment, Config.MY_NEW_PLACES_LIST)
+                            .commit();
+
                     return true;
                 case R.id.navigation_post:
                     //ToDo: make the layout of the new post (#8)
                     //ToDo: make a fragment to display the view (#9)
                     //ToDo: associate the fragment with the view and display it (#10)
-                    mTextMessage.setText(R.string.title_post);
+
                     return true;
-                case R.id.navigation_add_place:
+                case R.id.navigation_add_place: // TODO: IMPLEMENTATION PERIOD 1 WEEK
                     /******************************Template****************************************/
-                    AddNewLocationFragment fragment = new AddNewLocationFragment();
+                    addNewLocationFragment = new AddNewLocationFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.home_container, fragment, Config.ADD_NEW_PLACE_FRAGMENT)
+                            .replace(R.id.home_container, addNewLocationFragment, Config.ADD_NEW_PLACE_FRAGMENT)
                             .commit();
                     /******************************Template****************************************/
-                    mTextMessage.setText(R.string.title_add_place);
+
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
+
                     return true;
             }
             return false;
@@ -89,14 +98,12 @@ public class MainActivity extends ApplicationMain {
 
 
         /** Test Navigation */
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_places);
         /** End Test Navigation **/
 
     }
-
-
 
     public void onClick(View v) {
         //ToDo remove this method after adding it in the profile options (Settings)
@@ -105,10 +112,8 @@ public class MainActivity extends ApplicationMain {
                     .signOut(this)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         public void onComplete(@NonNull Task<Void> task) {
-                            /*
-                            User is now signed out, so restart the activity to apply the
-                             authentication layout.
-                             */
+                            /* User is now signed out, so restart the activity to apply the
+                             authentication layout.*/
                             Intent intent = getIntent();
                             finish();
                             startActivity(intent);
@@ -146,6 +151,19 @@ public class MainActivity extends ApplicationMain {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onClickCallBack(boolean renamePlace) {
+        /*
+         * This method will called after the Dialog dismiss from AddNewLocationDialogFragment Class
+         * passing that if the user will rename the location or not. True if the user will rename
+         * the location and false if not.
+         */
+        if (addNewLocationFragment!=null){
+            addNewLocationFragment.onClickCallBack(renamePlace);
+        }
+
     }
 
 

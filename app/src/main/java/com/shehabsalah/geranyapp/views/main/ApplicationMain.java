@@ -1,4 +1,4 @@
-package com.shehabsalah.geranyapp.main;
+package com.shehabsalah.geranyapp.views.main;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;

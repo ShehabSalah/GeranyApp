@@ -13,5 +13,20 @@
     <string name="add_new_place_text">Do you like to add your current place to your places list?</string>
     <string name="no_signal_message">There is no internet connection :(</string>
     <string name="current_place_exist">Your current place in your places list</string>
+    <string name="name_your_place">Do you like to give a name to your place? You can change it later.</string>
+    <string name="place_added">Your place has been added successfully!</string>
     <string name="add_new_place_button">Add To My Places</string>
+
+    <string name="animate_add_location">add_location_animation</string>
+
+
+    <!--Edit Location Dialog-->
+    <string name="edit_location_dialog_header">Edit Places</string>
+    <string name="edit_location_dialog_description">Rename the current place</string>
+    <string name="save_button">SAVE</string>
+    <string name="cancel_button">CANCEL</string>
+    <string name="location_dialog_max_length">0 / 50</string>
+    <string name="formatting_max_length" formatted="false">%d / 50</string>
+    <string name="empty_name_error_message">"Cannot save an empty name! Please enter the place name."</string>
+
 </resources>
