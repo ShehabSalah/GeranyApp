@@ -1,7 +1,10 @@
 package com.shehabsalah.geranyapp.views.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,17 +68,12 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                 public void onClick(View v) {
                     int clickedPosition = getAdapterPosition();
                     if (!isSelected(clickedPosition)){
-                        Config.toastShort(context, "item to delete at position: "+ clickedPosition);
-                        //ToDo: remeber to modify this lines ****()****
-                        //ToDo: open delete warning message (DESIGN: #1)
-                        getDeletedPositionItem(clickedPosition);
-                    }else{
-                        Config.toastShort(context, "just do nothing");
+                        deleteAlert(clickedPosition);
                     }
                 }
             });
             //ToDo: set edit on click and implement the on click functionality
-            //ToDo: open rename dialog (DESIGN: #2)
+            //ToDo: open rename dialog (DESIGN: #1)
         }
 
     }
@@ -100,6 +98,11 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         }
     }
 
+    /**
+     * Method that loop on the places list and check if it active or not. If it active add the value
+     * of the active position to activePosition variable.
+     * NOTE: ActivePosition is the position that the user currently used and participate in it.
+     * */
     private void getSelectedPlace(){
         for (int i = 0; i < myPlacesController.getMyPlaces().size(); i++){
             if (myPlacesController.getMyPlaces().get(i).isActive()){
@@ -114,16 +117,20 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         return myPlacesController.getMyPlaces()==null?0:myPlacesController.getMyPlaces().size();
     }
 
+    /**
+     * This method indicate the position of the place that the user clicked on it and want to delete
+     * it and delete it, then shift the rest of the list smoothly.
+     * */
     private void getDeletedPositionItem(int position){
         if (position == myPlacesController.getMyPlaces().size() - 1) { // if last element is deleted, no need to shift
-            deleteItem(position, position);
+            deleteItem(position, 0);
         } else if(position == 0){
-            deleteItem(position, myPlacesController.getMyPlaces().size() - 1);
+            deleteItem(position, 1);
         } else{ // if the element deleted is not the last one
             int shift=1; // not zero, shift=0 is the case where position == dataList.size() - 1, which is already checked above
             while (true) {
                 try {
-                    deleteItem(position, position - shift);
+                    deleteItem(position,  shift);
                     break;
                 } catch (IndexOutOfBoundsException e) { // if fails, increment the shift and try again
                     shift++;
@@ -132,12 +139,53 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         }
     }
 
-    private void deleteItem(int position, int positionToDelete){
-        if (myPlacesController.deleteMyPlaceAtPosition(context,positionToDelete)){
+    /**
+     * This method delete the item at given position, shift the selected position indicator and
+     * notify the adapter that the data changed.
+     * @param position index of the item to delete.
+     * @param shift number needed to shift the selected position indicator.
+     * */
+    private void deleteItem(int position,  int shift){
+        if (myPlacesController.deleteMyPlaceAtPosition(context,position)){
             notifyItemRemoved(position);
-
+            notifyItemRangeChanged(0, getItemCount());
+            clearSelection();
+            if(activePosition == 0 || position > activePosition){
+                toggleSelection(activePosition);
+            }else{
+                toggleSelection(activePosition - shift);
+            }
         }else{
             Config.toastShort(context, context.getResources().getString(R.string.no_internet));
         }
+    }
+
+    /**
+     * */
+    private void deleteAlert(final int position){
+        AlertDialog.Builder builder;
+        String placeName = myPlacesController.getMyPlaces().get(position).getPlaceNickname();
+        if (placeName == null || placeName.isEmpty())
+            placeName = myPlacesController.getMyPlaces().get(position).getPlaceAddress();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setTitle(context.getString(R.string.delete_place_header))
+                .setMessage(String.format(context.getString(R.string.delete_place_message), placeName))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        getDeletedPositionItem(position);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(ContextCompat.getDrawable(context, R.drawable.ic_location_off))
+                .show();
     }
 }

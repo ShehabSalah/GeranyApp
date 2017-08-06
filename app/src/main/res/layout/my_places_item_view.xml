@@ -39,18 +39,19 @@
     </RelativeLayout>
     <ImageView
         android:id="@+id/edit"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:layout_margin="@dimen/shape_edge_padding"
+        android:layout_width="@dimen/clickable_icon_size"
+        android:layout_height="@dimen/clickable_icon_size"
+        android:padding="@dimen/shape_edge_extra_small_padding"
         app:srcCompat="@drawable/ic_mode_edit"
         android:tint="@color/default_icon_color"
         android:layout_gravity="center_vertical"
         />
     <ImageView
         android:id="@+id/delete_active"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:layout_marginEnd="@dimen/shape_edge_padding"
+        android:layout_width="@dimen/clickable_icon_size"
+        android:layout_height="@dimen/clickable_icon_size"
+        android:padding="@dimen/shape_edge_extra_small_padding"
+        android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
         app:srcCompat="@drawable/ic_delete"
         android:layout_gravity="center_vertical"/>
 
