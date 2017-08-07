@@ -83,8 +83,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                     }
                 }
             });
-            //ToDo: set edit on click and implement the on click functionality
-            //ToDo: open rename dialog (DESIGN: #1)
+
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -229,6 +228,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                 alertDialog.cancel();
             }
         });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,6 +244,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                 }
             }
         });
+
         placeName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -265,4 +266,5 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         alertDialog = builder.create();
         alertDialog.show();
     }
+
 }
