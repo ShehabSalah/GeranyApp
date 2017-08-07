@@ -33,4 +33,7 @@
     <string name="delete_place_header">Delete Place</string>
     <string name="delete_place_message">Are you sure you want to delete %s?</string>
 
+    <!--Selected Places-->
+    <string name="selected_place_message">%s has been selected.</string>
+
 </resources>

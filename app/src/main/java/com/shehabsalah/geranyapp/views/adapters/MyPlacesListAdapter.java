@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +34,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     private MyPlacesController myPlacesController;
     private Context context;
     private int activePosition = 0;
+    private AlertDialog alertDialog;
 
     public MyPlacesListAdapter(MyPlacesController myPlacesController, Context context) {
         this.myPlacesController = myPlacesController;
@@ -42,7 +47,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.my_places_item_holder) RelativeLayout placeHolder;
         @BindView(R.id.my_places_address_nickname) TextView nickname;
-        @BindView(R.id.my_places_address) TextView placeAddres;
+        @BindView(R.id.my_places_address) TextView placeAddress;
         @BindView(R.id.edit) ImageView edit;
         @BindView(R.id.delete_active) ImageView delete_active;
 
@@ -50,7 +55,6 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this,view);
-            //ToDo: set on click here
             placeHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,6 +64,13 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                     myPlacesController.getMyPlaces().get(activePosition).setActive(false);
                     myPlacesController.getMyPlaces().get(clickedPosition).setActive(true);
                     activePosition = clickedPosition;
+                    String placeName = myPlacesController.getMyPlaces().get(activePosition).getPlaceNickname();
+                    if (placeName == null || placeName.isEmpty())
+                        placeName = myPlacesController.getMyPlaces().get(activePosition).getPlaceAddress();
+                    Config.toastShort(context,
+                            String.format(context.getString(R.string.selected_place_message),
+                                    placeName));
+                    //add selected message
                 }
             });
 
@@ -74,6 +85,13 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
             });
             //ToDo: set edit on click and implement the on click functionality
             //ToDo: open rename dialog (DESIGN: #1)
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int clickedPosition = getAdapterPosition();
+                    showRenamePlaceFormDialog(clickedPosition);
+                }
+            });
         }
 
     }
@@ -88,7 +106,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     @Override
     public void onBindViewHolder(final MyPlacesListAdapter.MyViewHolder holder, final int position) {
         holder.nickname.setText(myPlacesController.getMyPlaces().get(position).getPlaceNickname());
-        holder.placeAddres.setText(myPlacesController.getMyPlaces().get(position ).getPlaceAddress());
+        holder.placeAddress.setText(myPlacesController.getMyPlaces().get(position ).getPlaceAddress());
         holder.delete_active.setImageDrawable(ContextCompat.getDrawable(
                 context,
                 isSelected(position)?R.drawable.ic_check_circle:R.drawable.ic_delete
@@ -161,6 +179,8 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     }
 
     /**
+     * This method show alert on delete a given position.
+     * @param position position to delete
      * */
     private void deleteAlert(final int position){
         AlertDialog.Builder builder;
@@ -187,5 +207,62 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                 })
                 .setIcon(ContextCompat.getDrawable(context, R.drawable.ic_location_off))
                 .show();
+    }
+
+    /**
+     * This method will display the (Edit Location) form to enable users to enter their preferred name
+     * to their current location and save it.
+     * */
+    private void showRenamePlaceFormDialog(final int position){
+        View v = LayoutInflater.from(context).inflate(R.layout.add_new_place_rename_layout,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final EditText placeName = (EditText)v.findViewById(R.id.edit_text_location_dialog);
+        TextView cancel = (TextView)v.findViewById(R.id.cancel_button_location_dialog);
+        TextView save = (TextView)v.findViewById(R.id.save_button_location_dialog);
+        TextView currentLocationTextView = (TextView)v.findViewById(R.id.current_location_edit_dialog);
+        final TextView textLength = (TextView)v.findViewById(R.id.edit_text_length);
+
+        currentLocationTextView.setText(myPlacesController.getMyPlaces().get(position).getPlaceAddress());
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newPlaceName = placeName.getText().toString().trim();
+                //Check if the user entered a non-white space characters
+                if (!newPlaceName.isEmpty() && myPlacesController.getMyPlaces().get(position)!=null){
+                    myPlacesController.updatePlaceNickname(myPlacesController.getMyPlaces().get(position), newPlaceName);
+                    notifyDataSetChanged();
+                    //Dismiss the dialog
+                    alertDialog.dismiss();
+                }else{
+                    Config.toastLong(context, context.getString(R.string.empty_name_error_message));
+                }
+            }
+        });
+        placeName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //update max length text view (0 / 50) with the entered text length
+                textLength.setText(String.format(context.getString(R.string.formatting_max_length), s.length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        builder.setView(v);
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 }
