@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.shehabsalah.geranyapp.views.activities.NewPostActivity">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/profile"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/appBackground"
+        app:layout_constraintLeft_toLeftOf="parent" />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/appBackground"
+        android:layout_marginBottom="@dimen/no_dp"
+        android:layout_marginEnd="@dimen/no_dp"
+        android:layout_marginStart="@dimen/no_dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        android:layout_marginRight="@dimen/no_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/no_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/view" />
+
+    <LinearLayout
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" >
+       <RelativeLayout
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1">
+           <ImageView
+               android:id="@+id/add_image"
+               android:layout_width="@dimen/clickable_icon_size"
+               android:layout_height="@dimen/clickable_icon_size"
+               android:padding="@dimen/shape_edge_extra_small_padding"
+               android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
+               android:layout_marginStart="@dimen/activity_horizontal_margin"
+               app:srcCompat="@drawable/ic_photo_camera"
+               android:layout_gravity="center_vertical"
+               android:layout_marginTop="@dimen/small_margin"
+               android:layout_marginBottom="@dimen/small_margin"/>
+       </RelativeLayout>
+        <TextView
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POST"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:textColor="@color/buttonColor"
+            android:background="@drawable/custom_border"/>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

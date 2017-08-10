@@ -134,7 +134,6 @@ public class MyPlacesController {
      * @return boolean true if the place is exist and false if not.
      * */
     public boolean checkIfCurrentLocationExits(String address){
-        fillPlaces();
         for (int i = 0; i < myPlaces.size(); i++){
             if(address.equals(myPlaces.get(i).getPlaceAddress()))
                 return true;

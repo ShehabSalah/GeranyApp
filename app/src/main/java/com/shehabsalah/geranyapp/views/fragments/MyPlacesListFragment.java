@@ -46,6 +46,7 @@ public class MyPlacesListFragment extends Fragment {
         ButterKnife.bind(this, mainView);
 
         myPlacesController = new MyPlacesController();
+        myPlacesController.fillPlaces();
 
 
         //setup the recycler view
@@ -83,6 +84,7 @@ public class MyPlacesListFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                //ToDo: make method to fetch My Places from the server and fill myPlaces ArrayList (IMPLEMENTATION: #1)
                 myPlacesController.fillPlaces();
                 myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
                 recyclerView.setAdapter(myPlacesListAdapter);

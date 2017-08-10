@@ -1,7 +1,10 @@
 package com.shehabsalah.geranyapp.views.activities;
 
 import android.content.Intent;
+import android.icu.text.DateFormat;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,8 @@ import com.shehabsalah.geranyapp.views.fragments.MyPlacesListFragment;
 import com.shehabsalah.geranyapp.views.main.ApplicationMain;
 import com.shehabsalah.geranyapp.util.Config;
 
+import java.lang.reflect.Field;
+
 public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private UserInfo userInfo;
@@ -35,7 +40,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
+                    setTitle(getString(R.string.title_home));
                     return true;
                 case R.id.navigation_places: // TODO: IMPLEMENTATION PERIOD 1 DAY
                     //ToDo: make the layout of places items (#5)
@@ -43,7 +48,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     //ToDo: display recycler view with 10 fake items (#7)
 
                     //ToDo: add the MyPlacesListFragment fragment here (DESIGN #7)
-
+                    setTitle(getString(R.string.title_places));
                     myPlacesListFragment = new MyPlacesListFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, myPlacesListFragment, Config.MY_NEW_PLACES_LIST)
@@ -54,8 +59,11 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     //ToDo: make the layout of the new post (#8)
                     //ToDo: make a fragment to display the view (#9)
                     //ToDo: associate the fragment with the view and display it (#10)
+                    Intent intent= new Intent(MainActivity.this, NewPostActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
-                    return true;
+                    return false;
                 case R.id.navigation_add_place: // TODO: IMPLEMENTATION PERIOD 1 WEEK
                     /******************************Template****************************************/
                     addNewLocationFragment = new AddNewLocationFragment();
@@ -63,10 +71,10 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                             .replace(R.id.home_container, addNewLocationFragment, Config.ADD_NEW_PLACE_FRAGMENT)
                             .commit();
                     /******************************Template****************************************/
-
+                    setTitle(getString(R.string.title_add_place));
                     return true;
                 case R.id.navigation_profile:
-
+                    setTitle(getString(R.string.title_profile));
                     return true;
             }
             return false;
@@ -99,6 +107,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
 
         /** Test Navigation */
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_places);
         /** End Test Navigation **/
@@ -164,6 +173,31 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             addNewLocationFragment.onClickCallBack(renamePlace);
         }
 
+    }
+    private void disableShiftMode(BottomNavigationView view) {
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+        try {
+            Field shiftingMode = menuView.getClass().getDeclaredField(getString(R.string.declared_field));
+            shiftingMode.setAccessible(true);
+            shiftingMode.setBoolean(menuView, false);
+            shiftingMode.setAccessible(false);
+            for (int i = 0; i < menuView.getChildCount(); i++) {
+                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+                //noinspection RestrictedApi
+                item.setShiftingMode(false);
+                // set once again checked value, so view will be updated
+                //noinspection RestrictedApi
+                item.setChecked(item.getItemData().isChecked());
+            }
+        } catch (NoSuchFieldException e) {
+            //remove logs
+            Log.e("BNVHelper", "Unable to get shift mode field", e);
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            //remove logs
+            Log.e("BNVHelper", "Unable to change value of shift mode", e);
+            e.printStackTrace();
+        }
     }
 
 

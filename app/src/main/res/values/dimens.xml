@@ -27,4 +27,6 @@
 
 
     <dimen name="bottom_actionbar_size">52dp</dimen>
+
+    <dimen name="no_dp">0dp</dimen>
 </resources>

@@ -7,6 +7,8 @@
     <color name="buttonDarkColor">#FF007AB9</color>
 
     <color name="lightGray">#C5C5C5</color>
+    <color name="lightGrayTrans">#8dc5c5c5</color>
+    <color name="tranColors">#00000000</color>
     <color name="darkGray">#AAAAAA</color>
     <color name="appBackground">#dcdcdc</color>
     <color name="strokeColor">#6e404040</color>

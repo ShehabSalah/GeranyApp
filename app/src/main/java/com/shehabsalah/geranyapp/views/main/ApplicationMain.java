@@ -29,7 +29,6 @@ public class ApplicationMain extends AppCompatActivity {
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected UserInfo userInfo;
 
-
     /**
      * This method check if the user exists or not
      * @return true if the user exists and false if the user not exist

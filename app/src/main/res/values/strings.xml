@@ -5,9 +5,9 @@
     <string name="unknown_error">Unknown error occur, please try again later.</string>
     <string name="title_activity_test">testActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_post">Add New Post</string>
+    <string name="title_post">New Post</string>
     <string name="title_places">My Places</string>
-    <string name="title_add_place">Add New Place</string>
+    <string name="title_add_place">New Place</string>
     <string name="title_profile">Profile</string>
 
     <string name="add_new_place_text">Do you like to add your current place to your places list?</string>
@@ -35,5 +35,7 @@
 
     <!--Selected Places-->
     <string name="selected_place_message">%s has been selected.</string>
+
+    <string name="declared_field">mShiftingMode</string>
 
 </resources>

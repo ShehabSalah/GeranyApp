@@ -27,4 +27,8 @@
         <item name="android:padding">24dp</item>
     </style>
 
+    <style name="NewPostStyle" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_close</item>
+    </style>
+
 </resources>
