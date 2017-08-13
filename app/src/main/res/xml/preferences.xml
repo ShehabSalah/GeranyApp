@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Personal Information"
+        android:key="personal_category">
+
+        <SwitchPreference
+            android:key="@string/e_v"
+            android:summary="@string/email_setting_summery"
+            android:title="@string/email_setting_title"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/m_v"
+            android:summary="@string/mobile_setting_summery"
+            android:title="@string/mobile_setting_title"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Account"
+        android:key="personal_category">
+        <Preference android:title="Log out"
+            android:key="@string/logout_key"
+            android:summary="@string/logout_summery"/>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -12,8 +12,14 @@ import android.widget.Toast;
 public class Config {
 
     //Fragments
-    public static final String ADD_NEW_PLACE_FRAGMENT = "addNewPlaceFragment";
-    public static final String MY_NEW_PLACES_LIST = "myNewPlacesList";
+    public static final String ADD_NEW_PLACE_FRAGMENT       = "addNewPlaceFragment";
+    public static final String MY_NEW_PLACES_LIST           = "myNewPlacesList";
+
+    //Extra
+    public static final String MY_PLACES_EXTRA              = "extra_places";
+    public static final String CATEGORIES_EXTRA             = "extra_categories";
+    public static final String USER_INFO                    = "extra_user_info";
+    public static final String LOGOUT_EXTRA                 = "logout_extra";
 
 
     /**

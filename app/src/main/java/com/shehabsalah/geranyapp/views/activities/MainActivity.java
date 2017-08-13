@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
 import com.shehabsalah.geranyapp.R;
+import com.shehabsalah.geranyapp.controllers.CategoriesController;
+import com.shehabsalah.geranyapp.controllers.MyPlacesController;
+import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationDialogFragment;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationFragment;
 import com.shehabsalah.geranyapp.views.fragments.MyPlacesListFragment;
@@ -28,9 +31,10 @@ import java.lang.reflect.Field;
 
 public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private UserInfo userInfo;
     AddNewLocationFragment addNewLocationFragment;
     MyPlacesListFragment myPlacesListFragment;
+    MyPlacesController myPlacesController;
+    CategoriesController categoriesController;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -42,40 +46,36 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                 case R.id.navigation_home:
                     setTitle(getString(R.string.title_home));
                     return true;
-                case R.id.navigation_places: // TODO: IMPLEMENTATION PERIOD 1 DAY
-                    //ToDo: make the layout of places items (#5)
-                    //ToDo: make a fragment to view the places (#6)
-                    //ToDo: display recycler view with 10 fake items (#7)
-
-                    //ToDo: add the MyPlacesListFragment fragment here (DESIGN #7)
+                case R.id.navigation_places:
                     setTitle(getString(R.string.title_places));
                     myPlacesListFragment = new MyPlacesListFragment();
+                    myPlacesListFragment.setMyPlaces(myPlacesController);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, myPlacesListFragment, Config.MY_NEW_PLACES_LIST)
                             .commit();
-
                     return true;
                 case R.id.navigation_post:
-                    //ToDo: make the layout of the new post (#8)
-                    //ToDo: make a fragment to display the view (#9)
-                    //ToDo: associate the fragment with the view and display it (#10)
-                    Intent intent= new Intent(MainActivity.this, NewPostActivity.class);
+                    Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
+                    intent.putExtra(Config.MY_PLACES_EXTRA, myPlacesController.getActivePlace());
+                    intent.putExtra(Config.USER_INFO, user);
+                    intent.putParcelableArrayListExtra(Config.CATEGORIES_EXTRA, categoriesController.getCategories());
                     startActivity(intent);
-                    overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
 
                     return false;
-                case R.id.navigation_add_place: // TODO: IMPLEMENTATION PERIOD 1 WEEK
-                    /******************************Template****************************************/
+                case R.id.navigation_add_place:
                     addNewLocationFragment = new AddNewLocationFragment();
+                    addNewLocationFragment.setMyPlaces(myPlacesController);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, addNewLocationFragment, Config.ADD_NEW_PLACE_FRAGMENT)
                             .commit();
-                    /******************************Template****************************************/
                     setTitle(getString(R.string.title_add_place));
                     return true;
                 case R.id.navigation_profile:
-                    setTitle(getString(R.string.title_profile));
-                    return true;
+                    Intent profile_intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    profile_intent.putExtra(Config.USER_INFO, user);
+                    startActivity(profile_intent);
+                    return false;
             }
             return false;
         }
@@ -96,15 +96,16 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         }
         setFirebaseAuthListener();
 
-        userInfo = getUserInfo();
-        if (userInfo!=null){
-            Log.i(LOG_TAG, userInfo.getDisplayName());
-            Log.i(LOG_TAG, userInfo.getProviderId());
-            Log.i(LOG_TAG, userInfo.getEmail());
-            Log.i(LOG_TAG, userInfo.getUid());
+        if (user!=null){
+            Log.i(LOG_TAG, user.getName());
+            Log.i(LOG_TAG, user.getProviderId());
+            Log.i(LOG_TAG, user.getEmail());
+            Log.i(LOG_TAG, user.getUid());
         }
 
 
+
+        loadData();
         /** Test Navigation */
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         disableShiftMode(navigation);
@@ -112,23 +113,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         navigation.setSelectedItemId(R.id.navigation_places);
         /** End Test Navigation **/
 
-    }
-
-    public void onClick(View v) {
-        //ToDo remove this method after adding it in the profile options (Settings)
-        if (v.getId() == R.id.sign_out) {
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        public void onComplete(@NonNull Task<Void> task) {
-                            /* User is now signed out, so restart the activity to apply the
-                             authentication layout.*/
-                            Intent intent = getIntent();
-                            finish();
-                            startActivity(intent);
-                        }
-                    });
-        }
     }
 
     @Override
@@ -198,6 +182,19 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
             e.printStackTrace();
         }
+    }
+
+
+
+    /**
+     * This method load all data needed in the application
+     * */
+    private void loadData(){
+        //ToDo: make this method load all data from the server onCreate
+        myPlacesController = new MyPlacesController();
+        myPlacesController.fillPlaces();
+        categoriesController = new CategoriesController();
+        categoriesController.fillCategories();
     }
 
 

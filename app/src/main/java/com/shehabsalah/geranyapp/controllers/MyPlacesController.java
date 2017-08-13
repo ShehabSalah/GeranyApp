@@ -140,4 +140,16 @@ public class MyPlacesController {
         }
         return false;
     }
+
+    /**
+     * This method returns the user active place or the place that the user choose in the places list.
+     * @return MyPlaces object that contain the user active place.
+     * */
+    public MyPlaces getActivePlace(){
+        for (int i = 0; i < myPlaces.size(); i++){
+            if(myPlaces.get(i).isActive())
+                return myPlaces.get(i);
+        }
+        return null;
+    }
 }

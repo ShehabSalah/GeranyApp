@@ -221,7 +221,8 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         TextView currentLocationTextView = (TextView)v.findViewById(R.id.current_location_edit_dialog);
         final TextView textLength = (TextView)v.findViewById(R.id.edit_text_length);
 
-        currentLocationTextView.setText(myPlacesController.getMyPlaces().get(position).getPlaceAddress());
+        String placeNickname = myPlacesController.getMyPlaces().get(position).getPlaceNickname();
+        currentLocationTextView.setText(placeNickname.trim().isEmpty()?myPlacesController.getMyPlaces().get(position).getPlaceAddress():placeNickname);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

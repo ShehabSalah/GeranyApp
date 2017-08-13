@@ -6,17 +6,107 @@
     android:layout_height="match_parent"
     tools:context="com.shehabsalah.geranyapp.views.activities.NewPostActivity">
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@mipmap/profile"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="@dimen/no_dp"
+        android:layout_height="@dimen/no_dp"
+        android:layout_marginBottom="@dimen/no_dp"
+        android:layout_marginLeft="@dimen/no_dp"
+        android:layout_marginRight="@dimen/no_dp"
+        android:layout_marginTop="@dimen/no_dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/appBackground"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/shape_edge_x2">
+
+            <!--ToDo: remove profile image from here [just the image resources]-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:src="@mipmap/profile"
+                app:civ_border_color="@color/appBackground"
+                app:civ_border_width="2dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/post_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/no_dp"
+                android:hint="@string/add_post_holder"
+                android:textSize="@dimen/text_medium_size"
+                app:layout_constraintLeft_toRightOf="@+id/profile_picture"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/profile_picture" />
+            <ImageView
+                android:id="@+id/upload_image_holder"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/shape_edge_x2"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/image"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_text" />
+
+            <ImageView
+                android:id="@+id/remove_post_image"
+                android:layout_width="@dimen/small_clickable_icon_size"
+                android:layout_height="@dimen/small_clickable_icon_size"
+                android:layout_marginEnd="@dimen/no_dp"
+                android:layout_marginTop="@dimen/no_dp"
+                android:background="@color/black_trans"
+                android:padding="@dimen/extra_small_margin"
+                android:src="@drawable/ic_close"
+                app:layout_constraintRight_toRightOf="@+id/upload_image_holder"
+                app:layout_constraintTop_toTopOf="@+id/upload_image_holder" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/note_holder"
+        android:layout_width="@dimen/no_dp"
+        android:layout_height="wrap_content"
+        android:background="@color/black_trans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navigation">
+        <TextView
+            android:id="@+id/post_note"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/no_dp"
+            android:layout_marginRight="@dimen/no_dp"
+            android:layout_marginBottom="@dimen/no_dp"
+            android:textSize="@dimen/text_normal_size"
+            android:padding="@dimen/text_extra_small_size"
+            android:textColor="@color/white_color"/>
+        <ImageView
+            android:id="@+id/remove_post_note"
+            android:layout_width="@dimen/small_clickable_icon_size"
+            android:layout_height="@dimen/small_clickable_icon_size"
+            android:layout_marginEnd="@dimen/extra_small_margin"
+            android:layout_marginTop="@dimen/no_dp"
+            android:padding="@dimen/extra_small_margin"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"/>
+
+    </LinearLayout>
     <View
         android:layout_width="0dp"
         android:layout_height="2dp"
@@ -30,10 +120,9 @@
         android:layout_marginLeft="@dimen/no_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/view" />
-
     <LinearLayout
         android:id="@+id/navigation"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/no_dp"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -41,27 +130,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" >
-       <RelativeLayout
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           android:layout_weight="1">
-           <ImageView
-               android:id="@+id/add_image"
-               android:layout_width="@dimen/clickable_icon_size"
-               android:layout_height="@dimen/clickable_icon_size"
-               android:padding="@dimen/shape_edge_extra_small_padding"
-               android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
-               android:layout_marginStart="@dimen/activity_horizontal_margin"
-               app:srcCompat="@drawable/ic_photo_camera"
-               android:layout_gravity="center_vertical"
-               android:layout_marginTop="@dimen/small_margin"
-               android:layout_marginBottom="@dimen/small_margin"/>
-       </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/add_image"
+                android:layout_width="@dimen/clickable_icon_size"
+                android:layout_height="@dimen/clickable_icon_size"
+                android:padding="@dimen/shape_edge_extra_small_padding"
+                android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_photo_camera"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/post_button_description"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginBottom="@dimen/small_margin"/>
+            <Spinner
+                android:id="@+id/categories"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/clickable_icon_size"
+                android:padding="@dimen/shape_edge_extra_small_padding"
+                android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/add_image">
+
+            </Spinner>
+        </RelativeLayout>
         <TextView
+            android:id="@+id/post_button"
             android:layout_weight="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POST"
+            android:text="@string/post"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"

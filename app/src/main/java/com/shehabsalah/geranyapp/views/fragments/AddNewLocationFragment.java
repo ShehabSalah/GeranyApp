@@ -2,6 +2,7 @@ package com.shehabsalah.geranyapp.views.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.adapters.MyPlacesListAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,8 @@ public class AddNewLocationFragment extends Fragment {
     TextView addLocationText;
     @BindView(R.id.add_to_places_button)
     Button addToPlacesButton;
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
 
     private AlertDialog alertDialog;
     private MyPlacesController myPlacesController;
@@ -49,7 +54,6 @@ public class AddNewLocationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.add_new_place_layout, container, false);
         ButterKnife.bind(this, mainView);
-        myPlacesController = new MyPlacesController();
         displayViews();
 
         addToPlacesButton.setOnClickListener(new View.OnClickListener() {
@@ -92,19 +96,26 @@ public class AddNewLocationFragment extends Fragment {
      * */
     private void displayViews(){
         //Checking on the internet connection
+
         if (Config.isNetworkConnected(getActivity())){
-            // if connected, then check if this place in My Places list or not
-            if (checkIfMyCurrentPlaceInPlacesListOrNot() && currentLocationAddress!=null) {
-                //This place is exist in My Places list.
-                beenHere();
-            }else if(currentLocationAddress==null){
-                // if not connected
-                connectionLoss();
-            }else{
-                //This place not exist in My Places list
-                //Enable Add New Place functionality.
-                addLocation();
-            }
+            playProgressBar();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // if connected, then check if this place in My Places list or not
+                    if (checkIfMyCurrentPlaceInPlacesListOrNot() && currentLocationAddress!=null) {
+                        //This place is exist in My Places list.
+                        beenHere();
+                    }else if(currentLocationAddress==null){
+                        // if not connected
+                        connectionLoss();
+                    }else{
+                        //This place not exist in My Places list
+                        //Enable Add New Place functionality.
+                        addLocation();
+                    }
+                }
+            }, 4000);
         }else{
             // if not connected
             connectionLoss();
@@ -125,8 +136,17 @@ public class AddNewLocationFragment extends Fragment {
      * */
     private void connectionLoss(){
         addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_signal_wifi_off));
+        addNewLocationIcon.setVisibility(View.VISIBLE);
+        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayViews();
+            }
+        });
+        addLocationText.setVisibility(View.VISIBLE);
         addLocationText.setText(R.string.no_signal_message);
         addToPlacesButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -135,8 +155,17 @@ public class AddNewLocationFragment extends Fragment {
      * */
     private void beenHere(){
         addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_beenhere));
+        addNewLocationIcon.setVisibility(View.VISIBLE);
+        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Do nothing
+            }
+        });
+        addLocationText.setVisibility(View.VISIBLE);
         addLocationText.setText(R.string.current_place_exist);
         addToPlacesButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -146,8 +175,24 @@ public class AddNewLocationFragment extends Fragment {
      * */
     private void addLocation(){
         addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_person_pin_circle));
+        addNewLocationIcon.setVisibility(View.VISIBLE);
+        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Do nothing
+            }
+        });
+        addLocationText.setVisibility(View.VISIBLE);
         addLocationText.setText(R.string.add_new_place_text);
         addToPlacesButton.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void playProgressBar(){
+        addNewLocationIcon.setVisibility(View.GONE);
+        addLocationText.setVisibility(View.GONE);
+        addToPlacesButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -220,6 +265,10 @@ public class AddNewLocationFragment extends Fragment {
         builder.setView(v);
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void setMyPlaces(MyPlacesController myPlacesController){
+        this.myPlacesController = myPlacesController;
     }
 
 }

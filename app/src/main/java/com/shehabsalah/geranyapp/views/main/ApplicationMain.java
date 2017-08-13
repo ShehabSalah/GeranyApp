@@ -1,6 +1,7 @@
 package com.shehabsalah.geranyapp.views.main;
 
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +14,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.shehabsalah.geranyapp.R;
 import com.firebase.ui.auth.AuthUI;
+import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.activities.SettingsActivity;
 
 import java.util.Arrays;
 
@@ -27,7 +30,7 @@ public class ApplicationMain extends AppCompatActivity {
     protected static int RC_SIGN_IN = 0;
     protected FirebaseAuth mAuth;
     protected FirebaseAuth.AuthStateListener mAuthListener;
-    protected UserInfo userInfo;
+    protected User user;
 
     /**
      * This method check if the user exists or not
@@ -63,24 +66,8 @@ public class ApplicationMain extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // Even a user's provider-specific profile information
-                    // only reveals basic information
-                        UserInfo profile = user.getProviderData().get(0);
-                        // Id of the provider (ex: google.com)
-                        String providerId = profile.getProviderId();
-                        // UID specific to the provider
-                        String profileUid = profile.getUid();
-                        // Name, email address, and profile photo Url
-                        String profileDisplayName = profile.getDisplayName();
-                        String profileEmail = profile.getEmail();
-                        Uri profilePhotoUrl = profile.getPhotoUrl();
-                        Log.v("LOGIN",providerId);
-                        Log.v("LOGIN",profileUid);
-                        Log.v("LOGIN",profileDisplayName);
-                        if (profileEmail!=null)
-                            Log.v("LOGIN",profileEmail);
-                        Log.v("LOGIN",profilePhotoUrl.toString());
-                        userInfo = profile;
+                    //Get the user basic information
+                    getUserDate(getUserInfo());
 
                     Log.d("LOGIN", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
@@ -90,6 +77,19 @@ public class ApplicationMain extends AppCompatActivity {
                 // ...
             }
         };
+    }
+
+    private void getUserDate(UserInfo profile){
+        user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
+                profile.getUid(), profile.getPhotoUrl().toString());
+        getUserSettings();
+    }
+
+    private void getUserSettings(){
+        //ToDo: get the user information from firebase server and fill the settings (IMPLEMENTATION #1)
+        //the next lines is temporary code to be replaced with firebase connection
+        user.setAllowDisplayingEmail(true);
+        user.setAllowDisplayingMobileNumber(true);
     }
 
 

@@ -45,10 +45,6 @@ public class MyPlacesListFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.my_places_layout, container, false);
         ButterKnife.bind(this, mainView);
 
-        myPlacesController = new MyPlacesController();
-        myPlacesController.fillPlaces();
-
-
         //setup the recycler view
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
@@ -84,7 +80,6 @@ public class MyPlacesListFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //ToDo: make method to fetch My Places from the server and fill myPlaces ArrayList (IMPLEMENTATION: #1)
                 myPlacesController.fillPlaces();
                 myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
                 recyclerView.setAdapter(myPlacesListAdapter);
@@ -92,4 +87,14 @@ public class MyPlacesListFragment extends Fragment {
             }
         }, 4000);
     }
+
+    public void setMyPlaces(MyPlacesController myPlacesController){
+        this.myPlacesController = myPlacesController;
+    }
 }
+
+/**
+ * NOTE TO IMPLEMENT:
+ * Make the application on refresh to re load the data from the server.
+ * But first time get my places from the main activity
+ * */

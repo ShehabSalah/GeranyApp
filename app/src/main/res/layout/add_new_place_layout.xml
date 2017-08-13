@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     tools:context=".views.fragments.AddNewLocationFragment">
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"/>
     <ImageView
         android:id="@+id/add_new_location_icon"
         android:layout_width="@dimen/ground_icon_width_size"
@@ -16,7 +31,9 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="@dimen/shape_edge_padding"
-        app:layout_constraintBottom_toTopOf="@+id/add_location_text" />
+        app:layout_constraintBottom_toTopOf="@+id/add_location_text"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/add_location_text"
         android:layout_width="wrap_content"
@@ -36,7 +53,8 @@
         app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-medium"/>
+        android:fontFamily="sans-serif-medium"
+        android:visibility="gone"/>
     <Button
         android:id="@+id/add_to_places_button"
         android:layout_width="wrap_content"
@@ -50,5 +68,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"/>
+        app:layout_constraintHorizontal_bias="0.502"
+        android:visibility="gone"/>
 </android.support.constraint.ConstraintLayout>

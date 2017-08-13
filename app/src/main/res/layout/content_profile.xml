@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activities.ProfileActivity"
+    tools:showIn="@layout/activity_profile">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <ImageView
+                android:id="@+id/cover_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_height"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/login_bg"
+                android:tint="@color/black_extra_light"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.9"
+                />
+
+            <FrameLayout
+                android:id="@+id/main_frame_title"
+                android:layout_width="match_parent"
+                android:layout_height="116dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.3"
+                >
+
+                <LinearLayout
+                    android:id="@+id/main_linear_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/username_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:textColor="@android:color/white"
+                        android:layout_marginTop="@dimen/shape_edge_x2"
+                        android:textSize="@dimen/text_very_large_size"
+                        tools:text="shehab salah"
+                        />
+
+                    <TextView
+                        android:id="@+id/email_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/white"
+                        tools:text = "shehabsalah25@gmail.com"
+                        />
+
+                </LinearLayout>
+            </FrameLayout>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/profile_history" />
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_anchor="@id/main_frame_title"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/shape_edge_x4"
+            android:paddingEnd="@dimen/shape_edge_x2"
+            >
+
+            <Space
+                android:layout_width="@dimen/shape_edge_x2"
+                android:layout_height="@dimen/shape_edge_x2"
+                />
+
+            <TextView
+                android:id="@+id/username_profile_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/shape_edge_extra_small_padding"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large_size"
+                tools:text="Shehab Salah"
+                />
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="@dimen/profile_image_size"
+        android:layout_height="@dimen/profile_image_size"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/profile"
+        app:civ_border_color="@color/appBackground"
+        app:civ_border_width="2dp"
+        app:finalHeight="@dimen/shape_edge_x2"
+        app:finalYPosition="2dp"
+        app:layout_behavior=".util.AvatarImageBehavior"
+        app:startHeight="2dp"
+        app:startToolbarPosition="2dp"
+        app:startXPosition="2dp"
+        />
+
+</android.support.design.widget.CoordinatorLayout>
