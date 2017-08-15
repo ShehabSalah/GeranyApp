@@ -40,7 +40,7 @@ public class MyPlacesController {
      * */
     public MyPlaces addNewPlace(String placeAddress){
 
-        MyPlaces myPlaces = new MyPlaces(placeAddress, "", false);
+        MyPlaces myPlaces = new MyPlaces("5","11",placeAddress, "", false);
         //ToDo: add the place to the server (IMPLEMENTATION: #2)
 
         return myPlaces;
@@ -66,26 +66,36 @@ public class MyPlacesController {
         //ToDo: replace content with fetching places from the server (IMPLEMENTATION: #4)
         myPlaces = new ArrayList<>();
         myPlaces.add(new MyPlaces(
+                "0",
+                "11",
                 "Al Maged Street, 9th district, Al Obur City, Cairo, Egypt",
                 "Home 1",
                 true
         ));
         myPlaces.add(new MyPlaces(
+                "1",
+                "11",
                 "Shehab Salah Street, 5th district, Al Obur City, Cairo, Egypt",
                 "Home 2",
                 false
         ));
         myPlaces.add(new MyPlaces(
+                "2",
+                "11",
                 "Makram Abead Street, Nasr City, Cairo, Egypt",
                 "",
                 false
         ));
         myPlaces.add(new MyPlaces(
+                "3",
+                "11",
                 "Freezone,Al Wafaa W El Amal, Nasr City, Cairo, Egypt",
                 "Home 4",
                 false
         ));
         myPlaces.add(new MyPlaces(
+                "4",
+                "11",
                 "Al Dlivrand Street, Misr El Gdeeda, Cairo, Egypt",
                 "Home 5",
                 false

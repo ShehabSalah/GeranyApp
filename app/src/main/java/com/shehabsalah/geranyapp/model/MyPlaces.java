@@ -9,18 +9,23 @@ import android.os.Parcelable;
  */
 
 public class MyPlaces implements Parcelable {
-    private String id;
+    private String placeId;
+    private String userId;
     private String placeAddress;
     private String placeNickname;
     private boolean isActive;
 
-    public MyPlaces(String placeAddress, String placeNickname, boolean isActive) {
+    public MyPlaces(String placeId, String userId, String placeAddress, String placeNickname, boolean isActive) {
+        this.placeId = placeId;
+        this.userId = userId;
         this.placeAddress = placeAddress;
         this.placeNickname = placeNickname;
         this.isActive = isActive;
     }
 
     protected MyPlaces(Parcel in) {
+        placeId = in.readString();
+        userId = in.readString();
         placeAddress = in.readString();
         placeNickname = in.readString();
         isActive = in.readByte() != 0;
@@ -28,6 +33,8 @@ public class MyPlaces implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(placeId);
+        dest.writeString(userId);
         dest.writeString(placeAddress);
         dest.writeString(placeNickname);
         dest.writeByte((byte) (isActive ? 1 : 0));
@@ -74,11 +81,19 @@ public class MyPlaces implements Parcelable {
         isActive = active;
     }
 
-    public String getId() {
-        return id;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
