@@ -24,7 +24,7 @@
                 android:textSize="@dimen/text_medium_size"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="Home"/>
+                tools:text="@string/address_nickname"/>
             <TextView
                 android:id="@+id/my_places_address"
                 android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:textSize="@dimen/text_normal_size"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="Al Magd Street, 9th district, Al-Obour City, Cairo, Egypt."/>
+                tools:text="@string/address"/>
         </LinearLayout>
 
         

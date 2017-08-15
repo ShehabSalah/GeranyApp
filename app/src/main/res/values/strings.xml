@@ -141,6 +141,10 @@
 
     <!-- Profile content-->
     <string name="up">Up</string>
+    <string name="username">Shehab Salah</string>
+    <string name="user_email">shehabsalah25@gmail.com</string>
+    <string name="address">Al Magd Street, 9th district, Al-Obour City, Cairo, Egypt.</string>
+    <string name="address_nickname">Home</string>
 
     <!-- Settings Content -->
     <string name="m_v">mobile_visibility</string>

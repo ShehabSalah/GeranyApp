@@ -59,7 +59,7 @@
                         android:textColor="@android:color/white"
                         android:layout_marginTop="@dimen/shape_edge_x2"
                         android:textSize="@dimen/text_very_large_size"
-                        tools:text="shehab salah"
+                        tools:text="@string/username"
                         />
 
                     <TextView
@@ -69,7 +69,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="4dp"
                         android:textColor="@android:color/white"
-                        tools:text = "shehabsalah25@gmail.com"
+                        tools:text = "@string/user_email"
                         />
 
                 </LinearLayout>
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:layout_anchor="@id/main_frame_title"
+        app:layout_anchor="@+id/main_frame_title"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:title="">
 
@@ -112,7 +112,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_large_size"
-                tools:text="Shehab Salah"
+                tools:text="@string/username"
                 />
 
         </LinearLayout>

@@ -56,9 +56,8 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_toEndOf="@+id/edit_icon"
-            android:text="Al Maged Street, 9th district, Cairo, Egypt."
-            tools:text="Al Maged Street, 9th district, Cairo, Egypt."
             android:textSize="@dimen/text_extra_small_size"
+            tools:text="@string/address"
             />
         <ImageView
             android:id="@+id/edit_icon"
