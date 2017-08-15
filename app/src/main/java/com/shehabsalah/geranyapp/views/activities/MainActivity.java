@@ -97,10 +97,10 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         setFirebaseAuthListener();
 
         if (user!=null){
-            Log.i(LOG_TAG, user.getName());
+            Log.i(LOG_TAG, user.getProfileDisplayName());
             Log.i(LOG_TAG, user.getProviderId());
-            Log.i(LOG_TAG, user.getEmail());
-            Log.i(LOG_TAG, user.getUid());
+            Log.i(LOG_TAG, user.getProfileEmail());
+            Log.i(LOG_TAG, user.getProfileUid());
         }
 
 

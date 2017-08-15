@@ -76,13 +76,13 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
         Intent intent = getIntent();
         if (intent.hasExtra(Config.USER_INFO)){
             user        = intent.getParcelableExtra(Config.USER_INFO);
-            usernameProfile.setText(user.getName());
-            usernameProfileToolbar.setText(user.getName());
-            if (user.getEmail()!=null){
-                emailProfile.setText(user.getEmail());
+            usernameProfile.setText(user.getProfileDisplayName());
+            usernameProfileToolbar.setText(user.getProfileDisplayName());
+            if (user.getProfileEmail()!=null){
+                emailProfile.setText(user.getProfileEmail());
             }
             Picasso.with(getApplicationContext())
-                    .load(user.getProfilePicture())
+                    .load(user.getProfilePhotoUrl())
                     .placeholder(R.mipmap.profile)
                     .error(R.mipmap.profile)
                     .into(profilePicture);

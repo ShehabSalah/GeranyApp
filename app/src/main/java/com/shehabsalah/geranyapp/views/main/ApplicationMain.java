@@ -81,7 +81,7 @@ public class ApplicationMain extends AppCompatActivity {
 
     private void getUserDate(UserInfo profile){
         user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
-                profile.getUid(), profile.getPhotoUrl().toString());
+                profile.getUid(), profile.getPhotoUrl().toString(),"");
         getUserSettings();
     }
 

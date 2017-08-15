@@ -9,30 +9,33 @@ import android.os.Parcelable;
  */
 
 public class User implements Parcelable{
-    private String name;
     private String providerId;
-    private String email;
-    private String uid;
-    private String profilePicture;
+    private String profileUid;
+    private String profileDisplayName;
+    private String profileEmail;
+    private String profilePhotoUrl;
+    private String phoneNumber;
     private boolean allowDisplayingMobileNumber;
     private boolean allowDisplayingEmail;
 
-    public User(String name, String providerId, String email, String uid, String profilePicture) {
-        this.name                       = name;
+    public User(String name, String providerId, String email, String uid, String profilePhotoUrl, String phoneNumber) {
+        this.profileDisplayName         = name;
         this.providerId                 = providerId;
-        this.email                      = email;
-        this.uid                        = uid;
-        this.profilePicture             = profilePicture;
+        this.profileEmail               = email;
+        this.profileUid                 = uid;
+        this.profilePhotoUrl            = profilePhotoUrl;
+        this.phoneNumber                = phoneNumber;
         allowDisplayingMobileNumber     = true;
         allowDisplayingEmail            = true;
 
     }
     protected User(Parcel in) {
-        name                            = in.readString();
+        profileDisplayName              = in.readString();
         providerId                      = in.readString();
-        email                           = in.readString();
-        uid                             = in.readString();
-        profilePicture                  = in.readString();
+        profileEmail                    = in.readString();
+        profileUid                      = in.readString();
+        profilePhotoUrl                 = in.readString();
+        phoneNumber                     = in.readString();
         allowDisplayingMobileNumber     = in.readByte() != 0;
         allowDisplayingEmail            = in.readByte() != 0;
 
@@ -40,11 +43,12 @@ public class User implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
+        dest.writeString(profileDisplayName);
         dest.writeString(providerId);
-        dest.writeString(email);
-        dest.writeString(uid);
-        dest.writeString(profilePicture);
+        dest.writeString(profileEmail);
+        dest.writeString(profileUid);
+        dest.writeString(profilePhotoUrl);
+        dest.writeString(phoneNumber);
         dest.writeByte((byte) (allowDisplayingMobileNumber ? 1 : 0));
         dest.writeByte((byte) (allowDisplayingEmail ? 1 : 0));
     }
@@ -66,12 +70,12 @@ public class User implements Parcelable{
         }
     };
 
-    public String getName() {
-        return name;
+    public String getProfileDisplayName() {
+        return profileDisplayName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProfileDisplayName(String name) {
+        this.profileDisplayName = name;
     }
 
     public String getProviderId() {
@@ -82,28 +86,28 @@ public class User implements Parcelable{
         this.providerId = providerId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getProfileEmail() {
+        return profileEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setProfileEmail(String email) {
+        this.profileEmail = email;
     }
 
-    public String getUid() {
-        return uid;
+    public String getProfileUid() {
+        return profileUid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setProfileUid(String uid) {
+        this.profileUid = uid;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 
     public boolean isAllowDisplayingMobileNumber() {

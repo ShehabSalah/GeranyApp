@@ -138,7 +138,7 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categoriesSpinner.setAdapter(adapter);
             Picasso.with(getApplicationContext())
-                    .load(user.getProfilePicture())
+                    .load(user.getProfilePhotoUrl())
                     .placeholder(R.mipmap.profile)
                     .error(R.mipmap.profile)
                     .into(profilePicture);
