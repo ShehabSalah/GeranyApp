@@ -18,6 +18,9 @@ public class User implements Parcelable{
     private boolean allowDisplayingMobileNumber;
     private boolean allowDisplayingEmail;
 
+    public User() {
+    }
+
     public User(String name, String providerId, String email, String uid, String profilePhotoUrl, String phoneNumber) {
         this.profileDisplayName         = name;
         this.providerId                 = providerId;
@@ -25,7 +28,7 @@ public class User implements Parcelable{
         this.profileUid                 = uid;
         this.profilePhotoUrl            = profilePhotoUrl;
         this.phoneNumber                = phoneNumber;
-        allowDisplayingMobileNumber     = true;
+        allowDisplayingMobileNumber     = false;
         allowDisplayingEmail            = true;
 
     }
@@ -108,6 +111,14 @@ public class User implements Parcelable{
 
     public void setProfilePhotoUrl(String profilePhotoUrl) {
         this.profilePhotoUrl = profilePhotoUrl;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isAllowDisplayingMobileNumber() {

@@ -9,7 +9,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shehabsalah.geranyapp.R;
+import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 
 import butterknife.BindView;
@@ -30,21 +33,29 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
     private boolean isEmailExist;
     private boolean isNumberExist;
+    private User user;
+    protected FirebaseDatabase database;
+    protected DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user_info);
-        if (getActionBar()!=null){
-            getActionBar().hide();
+        if (getSupportActionBar()!=null){
+            getSupportActionBar().hide();
         }
         ButterKnife.bind(this);
-        if (getIntent().hasExtra(Config.USER_HAS_EMAIL) && getIntent().hasExtra(Config.USER_HAS_NUMBER)){
+        if (getIntent().hasExtra(Config.USER_HAS_EMAIL) && getIntent().hasExtra(Config.USER_HAS_NUMBER)
+                && getIntent().hasExtra(Config.USER_INFO)){
             isEmailExist = getIntent().getBooleanExtra(Config.USER_HAS_EMAIL, false);
             isNumberExist = getIntent().getBooleanExtra(Config.USER_HAS_NUMBER, false);
+            user = getIntent().getParcelableExtra(Config.USER_INFO);
 
-            if (!isEmailExist && !isNumberExist)
+            if (isEmailExist && isNumberExist)
                 finish();
+
+            database = FirebaseDatabase.getInstance();
+            userRef = database.getReference(Config.DB_USERS);
 
             checkVisibility();
 
@@ -59,7 +70,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     String emailHolder = editTextEmail.getText().toString().trim();
                     if (!emailHolder.isEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(emailHolder).matches()){
                         addEmailToUserInfo(emailHolder);
-                        isEmailExist = true;
                     }else{
                         Config.toastLong(getApplicationContext(), getString(R.string.email_not_valid));
                         checkVisibility();
@@ -70,7 +80,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     String numberHolder = editTextMobile.getText().toString().trim();
                     if (!numberHolder.isEmpty() && android.util.Patterns.PHONE.matcher(numberHolder).matches()){
                         addMobileNumberToUserInfo(numberHolder);
-                        isNumberExist = true;
                     }else{
                         Config.toastLong(getApplicationContext(), getString(R.string.mobile_not_valid));
                         checkVisibility();
@@ -88,10 +97,15 @@ public class AddUserInfoActivity extends AppCompatActivity {
      * @param email user email address
      * */
     private void addEmailToUserInfo(String email){
-        //ToDo: add the user email to the user info in the database
-
-        if (isNumberExist){
-            finishTheActivity();
+        if (Config.isNetworkConnected(getApplicationContext())){
+            user.setProfileEmail(email);
+            userRef.child(user.getProfileUid()).setValue(user);
+            isEmailExist = true;
+            if (isNumberExist){
+                finishTheActivity();
+            }
+        }else{
+            Config.toastLong(getApplicationContext(), getString(R.string.no_internet));
         }
     }
 
@@ -100,16 +114,21 @@ public class AddUserInfoActivity extends AppCompatActivity {
      * @param mobile user mobile number
      * */
     private void addMobileNumberToUserInfo(String mobile){
-        //ToDo: add the user mobile number to the user info in the database
-
-        finishTheActivity();
+       if (Config.isNetworkConnected(getApplicationContext())){
+           //ToDo: add the user mobile number to the user info in the database
+           user.setPhoneNumber(mobile);
+           userRef.child(user.getProfileUid()).setValue(user);
+           isNumberExist = true;
+           finishTheActivity();
+       }else{
+           Config.toastLong(getApplicationContext(), getString(R.string.no_internet));
+       }
     }
 
     private void finishTheActivity(){
         Intent intent = new Intent(AddUserInfoActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 
@@ -126,5 +145,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
+    }
 }

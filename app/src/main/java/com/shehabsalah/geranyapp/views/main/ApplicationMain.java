@@ -1,5 +1,6 @@
 package com.shehabsalah.geranyapp.views.main;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,10 +11,17 @@ import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.shehabsalah.geranyapp.R;
 import com.firebase.ui.auth.AuthUI;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.activities.AddUserInfoActivity;
 
 import java.util.Arrays;
 
@@ -26,8 +34,11 @@ public class ApplicationMain extends AppCompatActivity {
     private final String LOG_TAG = ApplicationMain.class.getSimpleName();
     protected static int RC_SIGN_IN = 0;
     protected FirebaseAuth mAuth;
+    protected FirebaseDatabase database;
+    protected DatabaseReference userRef;
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected User user;
+    private boolean isGoogle = false;
 
     /**
      * This method check if the user exists or not
@@ -64,7 +75,12 @@ public class ApplicationMain extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //Get the user basic information
-                    getUserData(getUserInfo());
+                    getUserDataFromDB(getUserInfo());
+                    UserInfo userInfo = user.getProviderData().get(1);
+                    if (userInfo.getProviderId().contains("book")){
+                        isGoogle = false;
+                    }
+
 
                     Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
@@ -83,19 +99,8 @@ public class ApplicationMain extends AppCompatActivity {
      * @param profile social network profile
      * */
     private void getUserData(UserInfo profile){
-        boolean userDataAvailability = getUserDataFromDB(profile.getUid());
-        if (!userDataAvailability){
-            addUserToDB(profile);
-        }
-        checkUserInfo();
-        getUserSettings();
-    }
 
-    private void getUserSettings(){
-        //ToDo: get the user information from firebase server and fill the settings (IMPLEMENTATION #1)
-        //the next lines is temporary code to be replaced with firebase connection
-        user.setAllowDisplayingEmail(true);
-        user.setAllowDisplayingMobileNumber(true);
+
     }
 
 
@@ -116,14 +121,7 @@ public class ApplicationMain extends AppCompatActivity {
      * @param resultCode The onActivityResult passed code to make sure that sign in doesn't succeeded
      * */
     protected void handleSignInStates(int resultCode, IdpResponse response){
-        if (resultCode == ResultCodes.OK) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                // Do Nothing
-            } else {
-                // User is signed out of Firebase
-            }
-        } else {
+        if (resultCode != ResultCodes.OK) {
             // Sign in failed
             if (response == null) {
                 // User pressed back button
@@ -151,8 +149,21 @@ public class ApplicationMain extends AppCompatActivity {
      * If not the application will redirect the user to another screen to add his email or his
      * mobile number.
      * */
-    private void checkUserInfo(){
-        //ToDo: check on the user email and mobile number is null or not
+    private void userInfoNeeded(){
+        boolean isEmailExist = true;
+        boolean isNumberExist = true;
+        if (user.getProfileEmail() == null)
+            isEmailExist = false;
+        if (user.getPhoneNumber() == null)
+            isNumberExist = false;
+
+        Intent intent = new Intent(this, AddUserInfoActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(Config.USER_HAS_EMAIL, isEmailExist);
+        intent.putExtra(Config.USER_HAS_NUMBER, isNumberExist);
+        intent.putExtra(Config.USER_INFO, user);
+        startActivity(intent);
     }
 
     /**
@@ -160,21 +171,68 @@ public class ApplicationMain extends AppCompatActivity {
      * @param profile social network profile
      * */
     private void addUserToDB(UserInfo profile){
+        String userImage = null;
+        if (isGoogle){
+            userImage = profile.getPhotoUrl().toString().replace("/s96-c/","/s300-c/");
+        }
+
         user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
-                profile.getUid(), profile.getPhotoUrl().toString(), null);
-        //ToDo: add the user info to the database
-        //ToDo: add the default settings to the database
+                profile.getUid(), userImage, null);
+        userRef.child(profile.getUid()).setValue(user);
+        //userRef.child(Config.DB_USERS).setValue(user);
+        if (user.getProfileEmail() == null || user.getPhoneNumber() == null){
+            userInfoNeeded();
+        }
     }
 
     /**
-     * This method check if the user exists in the Database of not. If exists will set the user info
-     * in the user object then return true. If not will return false.
-     * @param profileUid profile id
-     * @return boolean that indicate that if the user exists or not
+     * This method check if the user exists in the Database or not. If exists will set the user info
+     * in the user object. If not will add the user into the database.
+     * @param profile profile id
      * */
-    private boolean getUserDataFromDB(String profileUid){
-        //ToDo: check if the user exists in the Database or not using the profile id
-        return false;
+    protected void getUserDataFromDB(final UserInfo profile){
+        final String profileUid = profile.getUid();
+        database = FirebaseDatabase.getInstance();
+        userRef = database.getReference(Config.DB_USERS);
+        userRef.keepSynced(true);
+        if (Config.isNetworkConnected(getApplicationContext())){
+            Query query = userRef.orderByChild(Config.PROFILE_ID).equalTo(profileUid);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.hasChild(profileUid)) {
+                        for (DataSnapshot userSnap: snapshot.getChildren()) {
+                            User userTemp = userSnap.getValue(User.class);
+
+                            if (userTemp.getProfileUid().equals(profileUid)){
+                                user = userTemp;
+                                if (userTemp.getProfileEmail() == null || userTemp.getPhoneNumber() == null){
+                                    userInfoNeeded();
+                                }
+                            }
+                        }
+                    }else{
+                        addUserToDB(profile);
+                    }
+                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(LOG_TAG, "Failed to read value.", databaseError.toException());
+                }
+            });
+        }else{
+            ((Callback) ApplicationMain.this).onLoadFinish(false);
+        }
+    }
+
+
+    public interface Callback {
+        /**
+         * This method called from getUserDataFromDB method after checking the user information.
+         * */
+        void onLoadFinish(boolean state);
     }
 
 }

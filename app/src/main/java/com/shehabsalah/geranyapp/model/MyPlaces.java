@@ -15,6 +15,9 @@ public class MyPlaces implements Parcelable {
     private String placeNickname;
     private boolean isActive;
 
+    public MyPlaces() {
+    }
+
     public MyPlaces(String placeId, String userId, String placeAddress, String placeNickname, boolean isActive) {
         this.placeId            = placeId;
         this.userId             = userId;

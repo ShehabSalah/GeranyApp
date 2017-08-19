@@ -17,6 +17,9 @@ public class Collaborator implements Parcelable{
     public String userNumber;
     public String post_id;
 
+    public Collaborator() {
+    }
+
     public Collaborator(String collaboratorId, String user_id, String username, String profile_pic, String userEmail, String userNumber, String post_id) {
         this.collaboratorId = collaboratorId;
         this.user_id        = user_id;

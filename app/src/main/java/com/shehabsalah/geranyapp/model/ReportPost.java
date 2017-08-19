@@ -14,6 +14,9 @@ public class ReportPost implements Parcelable{
     private String username;
     private String profile_pic;
 
+    public ReportPost() {
+    }
+
     public ReportPost(String reportPostId, String user_id, String username, String profile_pic) {
         this.reportPostId   = reportPostId;
         this.user_id        = user_id;

@@ -159,7 +159,7 @@
 
 
     <!-- User Info Activity -->
-    <string name="activity_header_user_info">Great! You’re almost</string>
+    <string name="activity_header_user_info">Great! You’re almost done.</string>
     <string name="activity_image_user_info">complete user information image</string>
     <string name="activity_email_icon_user_info">Email address icon</string>
     <string name="activity_email_hint_user_info">Enter your personal e-mail address</string>

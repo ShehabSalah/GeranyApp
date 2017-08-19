@@ -16,6 +16,9 @@ public class Dislike implements Parcelable{
     private String feedBack;
     private String post_id;
 
+    public Dislike() {
+    }
+
     public Dislike(String user_id, String username, String profile_pic, String dislikeId, String feedBack, String post_id) {
         this.user_id        = user_id;
         this.username       = username;

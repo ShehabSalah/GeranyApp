@@ -14,6 +14,9 @@ public class ReportFeedBack implements Parcelable{
     private String profile_pic;
     private String post_id;
 
+    public ReportFeedBack() {
+    }
+
     public ReportFeedBack(String reportId, String user_id, String username, String profile_pic, String post_id) {
         this.user_id        = user_id;
         this.username       = username;

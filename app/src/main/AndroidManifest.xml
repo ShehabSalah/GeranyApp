@@ -43,7 +43,8 @@
             android:name=".views.activities.SettingsActivity"
             android:parentActivityName=".views.activities.ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.activities.AddUserInfoActivity"></activity>
+        <activity android:name=".views.activities.AddUserInfoActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
     </application>
 
 </manifest>

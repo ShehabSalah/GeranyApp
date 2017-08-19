@@ -2,6 +2,7 @@ package com.shehabsalah.geranyapp.views.activities;
 
 import android.content.Intent;
 import android.icu.text.DateFormat;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -10,12 +11,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.CategoriesController;
@@ -29,12 +36,29 @@ import com.shehabsalah.geranyapp.util.Config;
 
 import java.lang.reflect.Field;
 
-public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback, ApplicationMain.Callback {
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
+    @BindView(R.id.home_container)
+    FrameLayout homeFrame;
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
+    @BindView(R.id.signal_off)
+    ImageView signalOff;
+    @BindView(R.id.signal_off_message)
+    TextView signalOffMessage;
+
+
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private boolean firstTime = true;
     AddNewLocationFragment addNewLocationFragment;
     MyPlacesListFragment myPlacesListFragment;
     MyPlacesController myPlacesController;
     CategoriesController categoriesController;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -45,6 +69,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     setTitle(getString(R.string.title_home));
+
                     return true;
                 case R.id.navigation_places:
                     setTitle(getString(R.string.title_places));
@@ -86,8 +111,9 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
+        ButterKnife.bind(this);
 
+        mAuth = FirebaseAuth.getInstance();
         //Initialize the FirebaseAuth instance and the AuthStateListener method so you can track
         //whenever the user signs in or out.
         mAuth = FirebaseAuth.getInstance();
@@ -95,7 +121,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             signIn();
         }
         setFirebaseAuthListener();
-
         if (user!=null){
             Log.i(LOG_TAG, user.getProfileDisplayName());
             Log.i(LOG_TAG, user.getProviderId());
@@ -103,16 +128,21 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             Log.i(LOG_TAG, user.getProfileUid());
         }
 
-
-
-        loadData();
-        /** Test Navigation */
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         disableShiftMode(navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_places);
-        /** End Test Navigation **/
+        initializeViews();
 
+        signalOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reloadUser();
+            }
+        });
+        signalOffMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reloadUser();
+            }
+        });
     }
 
     @Override
@@ -158,6 +188,22 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         }
 
     }
+
+    @Override
+    public void onLoadFinish(boolean state) {
+        if (state){
+            firstTime = false;
+            progressBar.setVisibility(View.GONE);
+            homeFrame.setVisibility(View.VISIBLE);
+            navigation.setVisibility(View.VISIBLE);
+            loadData();
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            navigation.setSelectedItemId(R.id.navigation_places);
+        }else{
+            noInternetLayout();
+        }
+    }
+
     private void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         try {
@@ -195,6 +241,47 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         myPlacesController.fillPlaces();
         categoriesController = new CategoriesController();
         categoriesController.fillCategories();
+    }
+    private void noInternetLayout(){
+        progressBar.setVisibility(View.GONE);
+        signalOff.setVisibility(View.VISIBLE);
+        signalOffMessage.setVisibility(View.VISIBLE);
+    }
+
+    private void initializeViews(){
+        if (firstTime){
+            progressBar.setVisibility(View.VISIBLE);
+            signalOff.setVisibility(View.GONE);
+            signalOffMessage.setVisibility(View.GONE);
+            homeFrame.setVisibility(View.GONE);
+            navigation.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void reloadUser(){
+        if (Config.isNetworkConnected(getApplicationContext())){
+            final FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                @Override
+                public void onSuccess(Void aVoid) {
+                    FirebaseUser fUser = auth.getCurrentUser();
+                    UserInfo fUserInfo = fUser.getProviderData().get(0);
+                    getUserDataFromDB(fUserInfo);
+                }
+            });
+            initializeViews();
+        }else{
+            initializeViews();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    noInternetLayout();
+                }
+            }, 500);
+
+        }
     }
 
 

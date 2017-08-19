@@ -23,6 +23,21 @@ public class Config {
     public static final String USER_HAS_EMAIL               = "user_has_email";
     public static final String USER_HAS_NUMBER              = "user_has_number";
 
+    //Database roots
+    public static final String DB_POSTS                     = "posts";
+    public static final String DB_CATEGORIES                = "categories";
+    public static final String DB_USERS                     = "users";
+    public static final String DB_PLACES                    = "places";
+    public static final String DB_DISLIKES                  = "dislikes";
+    public static final String DB_VOLUNTEER                 = "volunteer";
+    public static final String DB_REPORT_POST               = "post_reports";
+    public static final String DB_REPORT_FEEDBACK           = "feedback_reports";
+    public static final String DB_FEEDBACK                  = "feedback";
+    public static final String DB_DONATIONS                 = "donations";
+
+    //Database Childs
+    public static final String PROFILE_ID                   = "profileUid";
+
 
     /**
      * This method used to display short toasts.
