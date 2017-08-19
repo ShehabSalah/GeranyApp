@@ -13,13 +13,13 @@ public class Category implements Parcelable{
     private String categoryName;
 
     public Category(String categoryId, String categoryName) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
+        this.categoryId     = categoryId;
+        this.categoryName   = categoryName;
     }
 
     protected Category(Parcel in) {
-        categoryId = in.readString();
-        categoryName = in.readString();
+        categoryId          = in.readString();
+        categoryName        = in.readString();
     }
 
     @Override

@@ -16,19 +16,19 @@ public class MyPlaces implements Parcelable {
     private boolean isActive;
 
     public MyPlaces(String placeId, String userId, String placeAddress, String placeNickname, boolean isActive) {
-        this.placeId = placeId;
-        this.userId = userId;
-        this.placeAddress = placeAddress;
-        this.placeNickname = placeNickname;
-        this.isActive = isActive;
+        this.placeId            = placeId;
+        this.userId             = userId;
+        this.placeAddress       = placeAddress;
+        this.placeNickname      = placeNickname;
+        this.isActive           = isActive;
     }
 
     protected MyPlaces(Parcel in) {
-        placeId = in.readString();
-        userId = in.readString();
-        placeAddress = in.readString();
-        placeNickname = in.readString();
-        isActive = in.readByte() != 0;
+        placeId                 = in.readString();
+        userId                  = in.readString();
+        placeAddress            = in.readString();
+        placeNickname           = in.readString();
+        isActive                = in.readByte() != 0;
     }
 
     @Override
