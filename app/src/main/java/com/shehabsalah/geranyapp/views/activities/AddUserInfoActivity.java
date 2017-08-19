@@ -1,11 +1,13 @@
 package com.shehabsalah.geranyapp.views.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.util.Config;
@@ -44,12 +46,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             if (!isEmailExist && !isNumberExist)
                 finish();
 
-            if (!isEmailExist)
-                emailContainer.setVisibility(View.VISIBLE);
-
-            if (!isNumberExist)
-                numberContainer.setVisibility(View.VISIBLE);
-
+            checkVisibility();
 
         }else {
             finish();
@@ -62,6 +59,10 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     String emailHolder = editTextEmail.getText().toString().trim();
                     if (!emailHolder.isEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(emailHolder).matches()){
                         addEmailToUserInfo(emailHolder);
+                        isEmailExist = true;
+                    }else{
+                        Config.toastLong(getApplicationContext(), getString(R.string.email_not_valid));
+                        checkVisibility();
                     }
                 }
 
@@ -69,6 +70,10 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     String numberHolder = editTextMobile.getText().toString().trim();
                     if (!numberHolder.isEmpty() && android.util.Patterns.PHONE.matcher(numberHolder).matches()){
                         addMobileNumberToUserInfo(numberHolder);
+                        isNumberExist = true;
+                    }else{
+                        Config.toastLong(getApplicationContext(), getString(R.string.mobile_not_valid));
+                        checkVisibility();
                     }
                 }
 
@@ -84,6 +89,10 @@ public class AddUserInfoActivity extends AppCompatActivity {
      * */
     private void addEmailToUserInfo(String email){
         //ToDo: add the user email to the user info in the database
+
+        if (isNumberExist){
+            finishTheActivity();
+        }
     }
 
     /**
@@ -92,6 +101,28 @@ public class AddUserInfoActivity extends AppCompatActivity {
      * */
     private void addMobileNumberToUserInfo(String mobile){
         //ToDo: add the user mobile number to the user info in the database
+
+        finishTheActivity();
+    }
+
+    private void finishTheActivity(){
+        Intent intent = new Intent(AddUserInfoActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+    }
+
+    private void checkVisibility(){
+        if (!isEmailExist)
+            emailContainer.setVisibility(View.VISIBLE);
+        else
+            emailContainer.setVisibility(View.GONE);
+
+        if (!isNumberExist)
+            numberContainer.setVisibility(View.VISIBLE);
+        else
+            numberContainer.setVisibility(View.GONE);
     }
 
 

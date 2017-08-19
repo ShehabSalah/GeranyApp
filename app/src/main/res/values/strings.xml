@@ -166,5 +166,7 @@
     <string name="activity_mobile_icon_user_info">mobile number icon</string>
     <string name="activity_mobile_hint_user_info">Enter mobile number. Ex: +20xxxx</string>
     <string name="done">DONE</string>
+    <string name="email_not_valid">Please enter a valid e-mail address.</string>
+    <string name="mobile_not_valid">Please enter a valid mobile number.</string>
 
 </resources>
