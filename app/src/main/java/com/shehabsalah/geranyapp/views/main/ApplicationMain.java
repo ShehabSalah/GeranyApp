@@ -1,7 +1,5 @@
 package com.shehabsalah.geranyapp.views.main;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,7 +14,6 @@ import com.shehabsalah.geranyapp.R;
 import com.firebase.ui.auth.AuthUI;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
-import com.shehabsalah.geranyapp.views.activities.SettingsActivity;
 
 import java.util.Arrays;
 
@@ -26,7 +23,7 @@ import java.util.Arrays;
  */
 
 public class ApplicationMain extends AppCompatActivity {
-    private final String TAG = ApplicationMain.class.getSimpleName();
+    private final String LOG_TAG = ApplicationMain.class.getSimpleName();
     protected static int RC_SIGN_IN = 0;
     protected FirebaseAuth mAuth;
     protected FirebaseAuth.AuthStateListener mAuthListener;
@@ -67,21 +64,30 @@ public class ApplicationMain extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //Get the user basic information
-                    getUserDate(getUserInfo());
+                    getUserData(getUserInfo());
 
-                    Log.d("LOGIN", "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
-                    Log.d("mesh shebo", "onAuthStateChanged:signed_out");
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
                 }
                 // ...
             }
         };
     }
 
-    private void getUserDate(UserInfo profile){
-        user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
-                profile.getUid(), profile.getPhotoUrl().toString(),"");
+    /**
+     * This method check if the user exists in the DB or its first time to login.
+     * If the user exists? get the user info from the DB. If not, get the user info
+     * from the social network and then check if the all the user data needed exists.
+     * @param profile social network profile
+     * */
+    private void getUserData(UserInfo profile){
+        boolean userDataAvailability = getUserDataFromDB(profile.getUid());
+        if (!userDataAvailability){
+            addUserToDB(profile);
+        }
+        checkUserInfo();
         getUserSettings();
     }
 
@@ -121,23 +127,54 @@ public class ApplicationMain extends AppCompatActivity {
             // Sign in failed
             if (response == null) {
                 // User pressed back button
-                Log.v("LOGIN","SIGNIN_CANCELED");
+                Log.v(LOG_TAG,"SIGNIN_CANCELED");
                 finish();
                 return;
             }
 
             if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                Log.v("LOGIN","NO_NETWORK");
+                Log.v(LOG_TAG,"NO_NETWORK");
                 Config.toastLong(this, getString(R.string.no_internet));
                 return;
             }
 
             if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                Log.v("LOGIN","UNKNOWN_ERROR");
+                Log.v(LOG_TAG,"UNKNOWN_ERROR");
                 Config.toastLong(this, getString(R.string.unknown_error));
             }
         }
 
+    }
+
+    /**
+     * This method check if the user number and email is exists or not.
+     * If not the application will redirect the user to another screen to add his email or his
+     * mobile number.
+     * */
+    private void checkUserInfo(){
+        //ToDo: check on the user email and mobile number is null or not
+    }
+
+    /**
+     * This method add the user info to the Database
+     * @param profile social network profile
+     * */
+    private void addUserToDB(UserInfo profile){
+        user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
+                profile.getUid(), profile.getPhotoUrl().toString(), null);
+        //ToDo: add the user info to the database
+        //ToDo: add the default settings to the database
+    }
+
+    /**
+     * This method check if the user exists in the Database of not. If exists will set the user info
+     * in the user object then return true. If not will return false.
+     * @param profileUid profile id
+     * @return boolean that indicate that if the user exists or not
+     * */
+    private boolean getUserDataFromDB(String profileUid){
+        //ToDo: check if the user exists in the Database or not using the profile id
+        return false;
     }
 
 }

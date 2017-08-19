@@ -20,6 +20,8 @@ public class Config {
     public static final String CATEGORIES_EXTRA             = "extra_categories";
     public static final String USER_INFO                    = "extra_user_info";
     public static final String LOGOUT_EXTRA                 = "logout_extra";
+    public static final String USER_HAS_EMAIL               = "user_has_email";
+    public static final String USER_HAS_NUMBER              = "user_has_number";
 
 
     /**

@@ -157,4 +157,14 @@
     <string name="logout_summery">Log out from Gerany App.</string>
     <string name="logout_intent">log_out</string>
 
+
+    <!-- User Info Activity -->
+    <string name="activity_header_user_info">Great! You’re almost</string>
+    <string name="activity_image_user_info">complete user information image</string>
+    <string name="activity_email_icon_user_info">Email address icon</string>
+    <string name="activity_email_hint_user_info">Enter your personal e-mail address</string>
+    <string name="activity_mobile_icon_user_info">mobile number icon</string>
+    <string name="activity_mobile_hint_user_info">Enter mobile number. Ex: +20xxxx</string>
+    <string name="done">DONE</string>
+
 </resources>

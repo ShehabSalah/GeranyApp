@@ -8,7 +8,8 @@ import com.shehabsalah.geranyapp.util.Config;
 
 /**
  * Created by ShehabSalah on 8/12/17.
- *
+ * PostController class responsible on the communication between server, data model and views.
+ * This class contain the business logic of (Posts) tab and its main functionality.
  */
 
 public class PostController {

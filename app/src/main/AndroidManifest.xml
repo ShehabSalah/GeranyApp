@@ -31,18 +31,19 @@
             android:name=".views.activities.NewPostActivity"
             android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NewPostStyle"
-            />
+            android:theme="@style/NewPostStyle" />
         <activity
             android:name=".views.activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".views.activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".views.activities.SettingsActivity"
+            android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".views.activities.ProfileActivity"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activities.SettingsActivity"
+            android:parentActivityName=".views.activities.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".views.activities.AddUserInfoActivity"></activity>
     </application>
 
 </manifest>
