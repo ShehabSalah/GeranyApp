@@ -1,13 +1,16 @@
 package com.shehabsalah.geranyapp.views.activities;
 
+import android.Manifest;
 import android.content.Intent;
-import android.icu.text.DateFormat;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,18 +19,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.CategoriesController;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
-import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationDialogFragment;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationFragment;
 import com.shehabsalah.geranyapp.views.fragments.MyPlacesListFragment;
@@ -39,7 +38,7 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback, ApplicationMain.Callback {
+public class MainActivity extends ApplicationMain implements AddNewLocationDialogFragment.Callback, ApplicationMain.Callback{
     @BindView(R.id.progress)
     ProgressBar progressBar;
     @BindView(R.id.home_container)
@@ -56,7 +55,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     private boolean firstTime = true;
     AddNewLocationFragment addNewLocationFragment;
     MyPlacesListFragment myPlacesListFragment;
-    MyPlacesController myPlacesController;
     CategoriesController categoriesController;
 
 
@@ -74,7 +72,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                 case R.id.navigation_places:
                     setTitle(getString(R.string.title_places));
                     myPlacesListFragment = new MyPlacesListFragment();
-                    myPlacesListFragment.setMyPlaces(myPlacesController);
+                    myPlacesListFragment.setMyPlaces(myPlacesController, user);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, myPlacesListFragment, Config.MY_NEW_PLACES_LIST)
                             .commit();
@@ -237,8 +235,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
      * */
     private void loadData(){
         //ToDo: make this method load all data from the server onCreate
-        myPlacesController = new MyPlacesController();
-        myPlacesController.fillPlaces();
+        //requestLocationPermission();
         categoriesController = new CategoriesController();
         categoriesController.fillCategories();
     }
@@ -262,28 +259,26 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     private void reloadUser(){
         if (Config.isNetworkConnected(getApplicationContext())){
             final FirebaseAuth auth = FirebaseAuth.getInstance();
-            auth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+            if (auth.getCurrentUser()!=null){
+                auth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
 
-                @Override
-                public void onSuccess(Void aVoid) {
-                    FirebaseUser fUser = auth.getCurrentUser();
-                    UserInfo fUserInfo = fUser.getProviderData().get(0);
-                    getUserDataFromDB(fUserInfo);
-                }
-            });
-            initializeViews();
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        FirebaseUser fUser = auth.getCurrentUser();
+                        UserInfo fUserInfo = fUser.getProviderData().get(0);
+                        getUserDataFromDB(fUserInfo);
+                    }
+                });
+            }
         }else{
-            initializeViews();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     noInternetLayout();
                 }
             }, 500);
-
         }
+        initializeViews();
     }
-
-
 
 }

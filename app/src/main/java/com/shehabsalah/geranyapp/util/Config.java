@@ -37,6 +37,19 @@ public class Config {
 
     //Database Childs
     public static final String PROFILE_ID                   = "profileUid";
+    public static final String USER_ID                      = "userId";
+
+    public static final String DEFAULT_PLACE_NAME           = "Default Place";
+
+    //API Links
+    public static final String SCHEME                   = "http";
+    public static final String BASE_URL                 = "www.platformhouse.com";
+    public static final String LOCATION_URL             = "/location";
+    public static final String FIND_LOCATION            = "finder.php";
+
+    //Params
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
 
 
     /**

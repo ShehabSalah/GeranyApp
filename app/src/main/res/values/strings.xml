@@ -169,4 +169,11 @@
     <string name="email_not_valid">Please enter a valid e-mail address.</string>
     <string name="mobile_not_valid">Please enter a valid mobile number.</string>
 
+    <!-- Location Dialog-->
+    <string name="location_dialog_header">Location needed!</string>
+    <string name="location_dialog_message">To use this feature you must open Location.</string>
+
+    <string name="dialog_positive_button">YES</string>
+    <string name="dialog_negative_button">Cancel</string>
+
 </resources>

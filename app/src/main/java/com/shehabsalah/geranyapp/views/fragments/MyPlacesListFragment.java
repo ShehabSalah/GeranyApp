@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.model.MyPlaces;
+import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.views.adapters.MyPlacesListAdapter;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class MyPlacesListFragment extends Fragment {
     RecyclerView recyclerView;
     MyPlacesListAdapter myPlacesListAdapter;
     MyPlacesController myPlacesController;
+    User userProfile;
 
 
     @Nullable
@@ -58,14 +60,14 @@ public class MyPlacesListFragment extends Fragment {
         );
 
         //fake connection to test the load
-        swipeToRefresh.setRefreshing(true);
-        refreshContent();
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshContent();
             }
         });
+        myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
+        recyclerView.setAdapter(myPlacesListAdapter);
 
         return mainView;
     }
@@ -77,24 +79,20 @@ public class MyPlacesListFragment extends Fragment {
      * places, and display those places.
      * */
     private void refreshContent(){
-        new Handler().postDelayed(new Runnable() {
+        swipeToRefresh.setRefreshing(true);
+        myPlacesController = new MyPlacesController(userProfile, getActivity()) {
             @Override
-            public void run() {
-                myPlacesController.fillPlaces();
+            public void myPlacesLoadFinish() {
                 myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
                 recyclerView.setAdapter(myPlacesListAdapter);
                 swipeToRefresh.setRefreshing(false);
             }
-        }, 4000);
+        };
+        myPlacesController.fillPlaces();
     }
 
-    public void setMyPlaces(MyPlacesController myPlacesController){
+    public void setMyPlaces(MyPlacesController myPlacesController, User userProfile){
         this.myPlacesController = myPlacesController;
+        this.userProfile = userProfile;
     }
 }
-
-/**
- * NOTE TO IMPLEMENT:
- * Make the application on refresh to re load the data from the server.
- * But first time get my places from the main activity
- * */

@@ -121,10 +121,12 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
      * NOTE: ActivePosition is the position that the user currently used and participate in it.
      * */
     private void getSelectedPlace(){
-        for (int i = 0; i < myPlacesController.getMyPlaces().size(); i++){
-            if (myPlacesController.getMyPlaces().get(i).isActive()){
-                activePosition = i;
-                break;
+        if (myPlacesController!=null){
+            for (int i = 0; i < myPlacesController.getMyPlaces().size(); i++){
+                if (myPlacesController.getMyPlaces().get(i).isActive()){
+                    activePosition = i;
+                    break;
+                }
             }
         }
     }

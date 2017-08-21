@@ -22,7 +22,6 @@ import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.util.Config;
-import com.shehabsalah.geranyapp.views.adapters.MyPlacesListAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +67,7 @@ public class AddNewLocationFragment extends Fragment {
                 */
                 if (Config.isNetworkConnected(getActivity()) && currentLocationAddress!=null){
                     //save the user current location in the server database
-                    myPlaces = myPlacesController.addNewPlace(currentLocationAddress);
+                    myPlaces = myPlacesController.addNewPlace(currentLocationAddress, null, false);
                     //Open BottomSheet dialog to ask user if he want to change the location name or not
                     //NOTE: the result will return in onClickCallBack() method
                     BottomSheetDialogFragment bottomSheetDialogFragment = new AddNewLocationDialogFragment();
@@ -126,8 +125,8 @@ public class AddNewLocationFragment extends Fragment {
      * @return (True) if the place exist and (False) if the place not exist
      * */
     private boolean checkIfMyCurrentPlaceInPlacesListOrNot(){
-        currentLocationAddress = myPlacesController.getTheCurrentLocation();
-        return myPlacesController.checkIfCurrentLocationExits(currentLocationAddress);
+        currentLocationAddress = myPlacesController.getCurrentLocation();
+        return myPlacesController.checkIfCurrentLocationExits();
     }
 
     /**

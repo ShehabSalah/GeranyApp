@@ -1,7 +1,12 @@
 package com.shehabsalah.geranyapp.views.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -19,6 +24,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.shehabsalah.geranyapp.R;
 import com.firebase.ui.auth.AuthUI;
+import com.shehabsalah.geranyapp.controllers.CategoriesController;
+import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.geranyapp.views.activities.AddUserInfoActivity;
@@ -30,7 +37,7 @@ import java.util.Arrays;
  * This class contain the main configurations of the parent of Activities
  */
 
-public class ApplicationMain extends AppCompatActivity {
+public class ApplicationMain extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
     private final String LOG_TAG = ApplicationMain.class.getSimpleName();
     protected static int RC_SIGN_IN = 0;
     protected FirebaseAuth mAuth;
@@ -39,6 +46,9 @@ public class ApplicationMain extends AppCompatActivity {
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected User user;
     private boolean isGoogle = false;
+    protected MyPlacesController myPlacesController;
+    protected CategoriesController categoriesController;
+    private final int LOCATION_PERMISSION = 9999;
 
     /**
      * This method check if the user exists or not
@@ -214,7 +224,7 @@ public class ApplicationMain extends AppCompatActivity {
                     }else{
                         addUserToDB(profile);
                     }
-                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                    requestLocationPermission();
                 }
 
                 @Override
@@ -235,4 +245,34 @@ public class ApplicationMain extends AppCompatActivity {
         void onLoadFinish(boolean state);
     }
 
+
+    protected void requestLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION);
+        } else{
+            myPlacesController = new MyPlacesController(user,getApplicationContext()){
+                @Override
+                public void myPlacesLoadFinish() {
+                    //ToDo: load the categories here and move the callback to the categories
+                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                }
+            };
+            myPlacesController.fillPlaces();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION && ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            myPlacesController = new MyPlacesController(user, getApplicationContext()) {
+                @Override
+                public void myPlacesLoadFinish() {
+                    //ToDo: load the categories here and move the callback to the categories
+                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                }
+            };
+            myPlacesController.fillPlaces();
+        }
+    }
 }
