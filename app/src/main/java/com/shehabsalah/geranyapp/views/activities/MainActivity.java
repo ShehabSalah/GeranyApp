@@ -88,7 +88,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     return false;
                 case R.id.navigation_add_place:
                     addNewLocationFragment = new AddNewLocationFragment();
-                    addNewLocationFragment.setMyPlaces(myPlacesController);
+                    addNewLocationFragment.setMyPlaces(myPlacesController, user);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, addNewLocationFragment, Config.ADD_NEW_PLACE_FRAGMENT)
                             .commit();

@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GeranyApp.iml" filepath="$PROJECT_DIR$/GeranyApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeranyApp.iml" filepath="$PROJECT_DIR$/GeranyApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/locationlib/locationlib.iml" filepath="$PROJECT_DIR$/locationlib/locationlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/locationlib/locationlib.iml" filepath="$PROJECT_DIR$/locationlib/locationlib.iml" />
     </modules>
   </component>

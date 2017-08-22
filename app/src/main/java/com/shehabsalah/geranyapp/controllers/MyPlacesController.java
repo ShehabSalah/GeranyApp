@@ -71,7 +71,7 @@ public abstract class MyPlacesController implements LocationListener{
      * This method communicate with Google Map API and the Gerany server to extract the user full address
      * @return string contain the full address of the user
      * */
-    private String getTheCurrentLocation() {
+    public void getTheCurrentLocation() {
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -91,7 +91,6 @@ public abstract class MyPlacesController implements LocationListener{
                 getLocationAsString();
             }
         }
-        return "Al Maged Street, 9th district, Al Obur City, Cairo, Egypt";
     }
 
     /**
@@ -139,8 +138,8 @@ public abstract class MyPlacesController implements LocationListener{
                     myPlaces.add(0,pls);
                 }
                 if (myPlaces.isEmpty()){
-                    getTheCurrentLocation();
                     isDefault = true;
+                    getTheCurrentLocation();
                 }else{
                     myPlacesLoadFinish();
                 }

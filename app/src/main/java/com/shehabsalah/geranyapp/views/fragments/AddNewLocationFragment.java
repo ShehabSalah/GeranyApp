@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.model.MyPlaces;
+import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 
 import butterknife.BindView;
@@ -47,6 +48,7 @@ public class AddNewLocationFragment extends Fragment {
     private MyPlacesController myPlacesController;
     private String currentLocationAddress = null;
     private MyPlaces myPlaces = null;
+    private User userProfile;
 
     @Nullable
     @Override
@@ -98,23 +100,14 @@ public class AddNewLocationFragment extends Fragment {
 
         if (Config.isNetworkConnected(getActivity())){
             playProgressBar();
-            new Handler().postDelayed(new Runnable() {
+           /* new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // if connected, then check if this place in My Places list or not
-                    if (checkIfMyCurrentPlaceInPlacesListOrNot() && currentLocationAddress!=null) {
-                        //This place is exist in My Places list.
-                        beenHere();
-                    }else if(currentLocationAddress==null){
-                        // if not connected
-                        connectionLoss();
-                    }else{
-                        //This place not exist in My Places list
-                        //Enable Add New Place functionality.
-                        addLocation();
-                    }
+
                 }
-            }, 4000);
+            }, 4000);*/
+            // if connected, then check if this place in My Places list or not
+            checkIfMyCurrentPlaceInPlacesListOrNot();
         }else{
             // if not connected
             connectionLoss();
@@ -124,9 +117,25 @@ public class AddNewLocationFragment extends Fragment {
      * This Method responsible on comparing the user current place with his places list.
      * @return (True) if the place exist and (False) if the place not exist
      * */
-    private boolean checkIfMyCurrentPlaceInPlacesListOrNot(){
-        currentLocationAddress = myPlacesController.getCurrentLocation();
-        return myPlacesController.checkIfCurrentLocationExits();
+    private void checkIfMyCurrentPlaceInPlacesListOrNot(){
+        MyPlacesController placesController = new MyPlacesController(userProfile, getActivity()) {
+            @Override
+            public void myPlacesLoadFinish() {
+                currentLocationAddress = getCurrentLocation();
+                if (checkIfCurrentLocationExits() &&  getCurrentLocation()!=null) {
+                    //This place is exist in My Places list.
+                    beenHere();
+                }else if(currentLocationAddress==null){
+                    // if not connected
+                    connectionLoss();
+                }else{
+                    //This place not exist in My Places list
+                    //Enable Add New Place functionality.
+                    addLocation();
+                }
+            }
+        };
+        placesController.getTheCurrentLocation();
     }
 
     /**
@@ -266,8 +275,9 @@ public class AddNewLocationFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void setMyPlaces(MyPlacesController myPlacesController){
+    public void setMyPlaces(MyPlacesController myPlacesController, User userProfile){
         this.myPlacesController = myPlacesController;
+        this.userProfile = userProfile;
     }
 
 }
