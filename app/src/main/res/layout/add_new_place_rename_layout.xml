@@ -18,6 +18,7 @@
             app:srcCompat="@drawable/ic_edit_location_layout"
             />
         <TextView
+            android:id="@+id/dialog_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit_location_dialog_header"
@@ -29,6 +30,7 @@
             />
     </RelativeLayout>
     <TextView
+        android:id="@+id/dialog_body_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/edit_location_dialog_description"

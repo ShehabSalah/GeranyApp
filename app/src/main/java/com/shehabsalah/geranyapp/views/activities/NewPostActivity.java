@@ -12,14 +12,17 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,6 +32,7 @@ import com.shehabsalah.geranyapp.model.Category;
 import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.locationlib.UploadImageThread;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,6 +44,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.R.attr.bitmap;
+import static android.R.attr.visibility;
 
 public class NewPostActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     @BindView(R.id.add_image)
@@ -47,7 +52,7 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     @BindView(R.id.categories)
     Spinner categoriesSpinner;
     @BindView(R.id.post_button)
-    TextView postButton;
+    Button postButton;
     @BindView(R.id.profile_picture)
     CircleImageView profilePicture;
     @BindView(R.id.post_text)
@@ -62,6 +67,8 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     ImageView removeNoteHolder;
     @BindView(R.id.post_note)
     TextView postNote;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
 
     PostController postController;
@@ -75,6 +82,9 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     private final int TAKE_PICTURE                  = 2;
     private final int OPEN_CAMERA_PERMISSION        = 3;
     private Uri imageUri = null;
+    private String postTextStr;
+    String categoryNameStr;
+    UploadImageThread uploadImageThread;
 
 
     @Override
@@ -84,7 +94,9 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
         setTitle(getString(R.string.title_post));
         ButterKnife.bind(this);
 
-        postController = new PostController();
+
+
+
         Intent intent = getIntent();
         if (intent.hasExtra(Config.CATEGORIES_EXTRA) && intent.hasExtra(Config.MY_PLACES_EXTRA)){
             categories  = intent.getParcelableArrayListExtra(Config.CATEGORIES_EXTRA);
@@ -235,18 +247,76 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     }
 
     private void uploadPost(){
-        String text = postText.getText().toString().trim();
-        String category = categoriesSpinner.getSelectedItem().toString();
-        String placeNickname = myPlaces.getPlaceNickname();
 
-        if (!text.isEmpty()){
-            postController.addNewPost(getApplicationContext(), text, category,
-                    placeNickname.trim().isEmpty() ? myPlaces.getPlaceAddress() : placeNickname,
-                    imageUri, user);
+        postTextStr = postText.getText().toString().trim();
+        categoryNameStr = categoriesSpinner.getSelectedItem().toString();
+        if (!postTextStr.isEmpty()){
+            postController = new PostController(getApplicationContext()) {
+                @Override
+                public void onLoadFinish() {
+                    finish();
+                }
+            };
+            if (imageUri!=null){
+                doFileUpload(postController.getPath(imageUri), postController.getCurrentDate());
+            }else{
+                uploadLayout();
+                postController.addNewPost(postTextStr, categoryNameStr,
+                        myPlaces.getPlaceAddress(), Config.FACK_IMAGE, user);
+                progressBar.setProgress(100);
+            }
         }else{
             Config.toastLong(getApplicationContext(), getString(R.string.post_text_error_message));
         }
     }
 
+    private void doFileUpload(String sourceFileUri, String currentDate){
 
+        uploadImageThread = new UploadImageThread() {
+            @Override
+            protected void onPreExecute() {
+                uploadLayout();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                postController.addNewPost(postTextStr, categoryNameStr,
+                        myPlaces.getPlaceAddress(), s, user);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                progressBar.setProgress(values[0]);
+            }
+        };
+        uploadImageThread.execute(sourceFileUri, currentDate);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (uploadImageThread!=null)
+            uploadImageThread.cancel(true);
+    }
+
+
+    private void uploadLayout(){
+        postButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.default_icon_color));
+        postButton.setBackgroundResource(R.drawable.disabled_cutom_border);
+        postButton.setEnabled(false);
+        categoriesSpinner.setEnabled(false);
+        postText.setEnabled(false);
+        addImage.setEnabled(false);
+        //image variables
+        removeImage.setEnabled(false);
+        removeImage.setAlpha(0.5F);
+        removeImage.setVisibility(View.GONE);
+        uploadImageHolder.setAlpha(0.5F);
+        //image variables
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setMax(100);
+        setTitle(getResources().getString(R.string.cancel));
+    }
 }

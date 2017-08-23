@@ -9,18 +9,21 @@ import android.os.Parcelable;
  */
 
 public class Collaborator implements Parcelable{
-    public String collaboratorId;
-    public String user_id;
-    public String username;
-    public String profile_pic;
-    public String userEmail;
-    public String userNumber;
-    public String post_id;
+    private String collaboratorId;
+    private String user_id;
+    private String username;
+    private String profile_pic;
+    private String userEmail;
+    private String userNumber;
+    private String post_id;
+    private boolean isNumberAllowed;
+    private boolean isEmailAllowed;
+
 
     public Collaborator() {
     }
 
-    public Collaborator(String collaboratorId, String user_id, String username, String profile_pic, String userEmail, String userNumber, String post_id) {
+    public Collaborator(String collaboratorId, String user_id, String username, String profile_pic, String userEmail, String userNumber, String post_id, boolean isEmailAllowed, boolean isNumberAllowed) {
         this.collaboratorId = collaboratorId;
         this.user_id        = user_id;
         this.username       = username;
@@ -28,6 +31,8 @@ public class Collaborator implements Parcelable{
         this.userEmail      = userEmail;
         this.userNumber     = userNumber;
         this.post_id        = post_id;
+        this.isEmailAllowed = isEmailAllowed;
+        this.isNumberAllowed = isNumberAllowed;
     }
 
     protected Collaborator(Parcel in) {
@@ -38,6 +43,8 @@ public class Collaborator implements Parcelable{
         userEmail           = in.readString();
         userNumber          = in.readString();
         post_id             = in.readString();
+        isEmailAllowed      = in.readByte() != 0;
+        isNumberAllowed     = in.readByte() != 0;
     }
 
     @Override
@@ -49,6 +56,8 @@ public class Collaborator implements Parcelable{
         dest.writeString(userEmail);
         dest.writeString(userNumber);
         dest.writeString(post_id);
+        dest.writeByte((byte) (isEmailAllowed ? 1 : 0));
+        dest.writeByte((byte) (isNumberAllowed ? 1 : 0));
     }
 
     @Override

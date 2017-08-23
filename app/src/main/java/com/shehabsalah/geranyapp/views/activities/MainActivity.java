@@ -30,6 +30,7 @@ import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationDialogFragment;
 import com.shehabsalah.geranyapp.views.fragments.AddNewLocationFragment;
 import com.shehabsalah.geranyapp.views.fragments.MyPlacesListFragment;
+import com.shehabsalah.geranyapp.views.fragments.PostFragment;
 import com.shehabsalah.geranyapp.views.main.ApplicationMain;
 import com.shehabsalah.geranyapp.util.Config;
 
@@ -54,6 +55,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private boolean firstTime = true;
     AddNewLocationFragment addNewLocationFragment;
+    PostFragment postFragment;
     MyPlacesListFragment myPlacesListFragment;
     CategoriesController categoriesController;
 
@@ -67,7 +69,11 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     setTitle(getString(R.string.title_home));
-
+                    postFragment = new PostFragment();
+                    postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                            .commit();
                     return true;
                 case R.id.navigation_places:
                     setTitle(getString(R.string.title_places));
@@ -192,11 +198,13 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         if (state){
             firstTime = false;
             progressBar.setVisibility(View.GONE);
+            signalOff.setVisibility(View.GONE);
+            signalOffMessage.setVisibility(View.GONE);
             homeFrame.setVisibility(View.VISIBLE);
             navigation.setVisibility(View.VISIBLE);
             loadData();
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            navigation.setSelectedItemId(R.id.navigation_places);
+            navigation.setSelectedItemId(R.id.navigation_home);
         }else{
             noInternetLayout();
         }
@@ -241,6 +249,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     }
     private void noInternetLayout(){
         progressBar.setVisibility(View.GONE);
+        homeFrame.setVisibility(View.GONE);
         signalOff.setVisibility(View.VISIBLE);
         signalOffMessage.setVisibility(View.VISIBLE);
     }

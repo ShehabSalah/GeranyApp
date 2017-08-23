@@ -14,6 +14,7 @@ public class Config {
     //Fragments
     public static final String ADD_NEW_PLACE_FRAGMENT       = "addNewPlaceFragment";
     public static final String MY_NEW_PLACES_LIST           = "myNewPlacesList";
+    public static final String POST_FRAGMENT                = "postFragment";
 
     //Extra
     public static final String MY_PLACES_EXTRA              = "extra_places";
@@ -22,6 +23,7 @@ public class Config {
     public static final String LOGOUT_EXTRA                 = "logout_extra";
     public static final String USER_HAS_EMAIL               = "user_has_email";
     public static final String USER_HAS_NUMBER              = "user_has_number";
+    public static final String FACK_IMAGE                   = "http://www.platformhouse.com/fack_image.jpg";
 
     //Database roots
     public static final String DB_POSTS                     = "posts";
@@ -38,6 +40,8 @@ public class Config {
     //Database Childs
     public static final String PROFILE_ID                   = "profileUid";
     public static final String USER_ID                      = "userId";
+    public static final String USER_ID2                     = "user_id";
+    public static final String LOCATION                     = "location";
 
     public static final String DEFAULT_PLACE_NAME           = "Default Place";
 

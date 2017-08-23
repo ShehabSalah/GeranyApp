@@ -35,9 +35,11 @@
     <string name="edit_location_dialog_description">Rename the current place</string>
     <string name="save_button">SAVE</string>
     <string name="cancel_button">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="location_dialog_max_length">0 / 50</string>
     <string name="formatting_max_length" formatted="false">%d / 50</string>
     <string name="empty_name_error_message">"Cannot save an empty name! Please enter the place name."</string>
+    <string name="empty_feedback">"Cannot save an empty feedback! Please enter a valid feedback."</string>
 
     <!--Delete Location Dialog-->
     <string name="delete_place_header">Delete Place</string>
@@ -144,6 +146,7 @@
     <string name="username">Shehab Salah</string>
     <string name="user_email">shehabsalah25@gmail.com</string>
     <string name="address">Al Magd Street, 9th district, Al-Obour City, Cairo, Egypt.</string>
+    <string name="category">Solving Problem</string>
     <string name="address_nickname">Home</string>
 
     <!-- Settings Content -->
@@ -175,5 +178,27 @@
 
     <string name="dialog_positive_button">YES</string>
     <string name="dialog_negative_button">Cancel</string>
+
+
+    <!-- POSTS -->
+    <string name="sample_post_text">"Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"</string>
+    <string name="post_interactions" formatted="false">%d dislikes - %d volunteers - %d donations</string>
+    <string name="post_interaction_sample">35 dislikes - 3 volunteers - 45678 donations</string>
+    <string name="dislike"> Dislike</string>
+    <string name="volunteer"> Volunteer</string>
+    <string name="donation"> Donate</string>
+
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_body_header">Why you dislike this post?</string>
+    <string name="home_posts_area">There is no posts in your area.</string>
+    <string name="profile_posts_area">You do not have any posts yet.</string>
 
 </resources>

@@ -252,9 +252,11 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
         } else{
             myPlacesController = new MyPlacesController(user,getApplicationContext()){
                 @Override
-                public void myPlacesLoadFinish() {
-                    //ToDo: load the categories here and move the callback to the categories
-                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                public void myPlacesLoadFinish(String location, boolean state) {
+                    if (state){
+                        //ToDo: load the categories here and move the callback to the categories
+                        ((Callback) ApplicationMain.this).onLoadFinish(true);
+                    }
                 }
             };
             myPlacesController.fillPlaces();
@@ -267,9 +269,11 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             myPlacesController = new MyPlacesController(user, getApplicationContext()) {
                 @Override
-                public void myPlacesLoadFinish() {
-                    //ToDo: load the categories here and move the callback to the categories
-                    ((Callback) ApplicationMain.this).onLoadFinish(true);
+                public void myPlacesLoadFinish(String location, boolean state) {
+                    if (state){
+                        //ToDo: load the categories here and move the callback to the categories
+                        ((Callback) ApplicationMain.this).onLoadFinish(true);
+                    }
                 }
             };
             myPlacesController.fillPlaces();

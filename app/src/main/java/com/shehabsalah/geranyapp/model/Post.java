@@ -190,4 +190,5 @@ public class Post implements Parcelable{
     public void setCategory_name(String category_name) {
         this.category_name = category_name;
     }
+
 }

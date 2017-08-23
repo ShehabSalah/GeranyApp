@@ -120,18 +120,22 @@ public class AddNewLocationFragment extends Fragment {
     private void checkIfMyCurrentPlaceInPlacesListOrNot(){
         MyPlacesController placesController = new MyPlacesController(userProfile, getActivity()) {
             @Override
-            public void myPlacesLoadFinish() {
-                currentLocationAddress = getCurrentLocation();
-                if (checkIfCurrentLocationExits() &&  getCurrentLocation()!=null) {
-                    //This place is exist in My Places list.
-                    beenHere();
-                }else if(currentLocationAddress==null){
-                    // if not connected
-                    connectionLoss();
+            public void myPlacesLoadFinish(String location, boolean state) {
+                if (state){
+                    currentLocationAddress = location;
+                    if (myPlacesController.checkIfCurrentLocationExits(currentLocationAddress) &&  currentLocationAddress!=null) {
+                        //This place is exist in My Places list.
+                        beenHere();
+                    }else if(currentLocationAddress==null){
+                        // if not connected
+                        connectionLoss();
+                    }else{
+                        //This place not exist in My Places list
+                        //Enable Add New Place functionality.
+                        addLocation();
+                    }
                 }else{
-                    //This place not exist in My Places list
-                    //Enable Add New Place functionality.
-                    addLocation();
+                    connectionLoss();
                 }
             }
         };
@@ -143,18 +147,20 @@ public class AddNewLocationFragment extends Fragment {
      * and hiding (ADD TO MY PLACES) button.
      * */
     private void connectionLoss(){
-        addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_signal_wifi_off));
-        addNewLocationIcon.setVisibility(View.VISIBLE);
-        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayViews();
-            }
-        });
-        addLocationText.setVisibility(View.VISIBLE);
-        addLocationText.setText(R.string.no_signal_message);
-        addToPlacesButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.GONE);
+        if (addNewLocationIcon!=null){
+            addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_signal_wifi_off));
+            addNewLocationIcon.setVisibility(View.VISIBLE);
+            addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayViews();
+                }
+            });
+            addLocationText.setVisibility(View.VISIBLE);
+            addLocationText.setText(R.string.no_signal_message);
+            addToPlacesButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -162,18 +168,20 @@ public class AddNewLocationFragment extends Fragment {
      * and hiding (ADD TO MY PLACES) button
      * */
     private void beenHere(){
-        addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_beenhere));
-        addNewLocationIcon.setVisibility(View.VISIBLE);
-        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Do nothing
-            }
-        });
-        addLocationText.setVisibility(View.VISIBLE);
-        addLocationText.setText(R.string.current_place_exist);
-        addToPlacesButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.GONE);
+       if (addNewLocationIcon!=null){
+           addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_beenhere));
+           addNewLocationIcon.setVisibility(View.VISIBLE);
+           addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //Do nothing
+               }
+           });
+           addLocationText.setVisibility(View.VISIBLE);
+           addLocationText.setText(R.string.current_place_exist);
+           addToPlacesButton.setVisibility(View.GONE);
+           progressBar.setVisibility(View.GONE);
+       }
     }
 
     /**
@@ -182,25 +190,29 @@ public class AddNewLocationFragment extends Fragment {
      * location list.
      * */
     private void addLocation(){
-        addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_person_pin_circle));
-        addNewLocationIcon.setVisibility(View.VISIBLE);
-        addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Do nothing
-            }
-        });
-        addLocationText.setVisibility(View.VISIBLE);
-        addLocationText.setText(R.string.add_new_place_text);
-        addToPlacesButton.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+       if (addNewLocationIcon!=null){
+           addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_person_pin_circle));
+           addNewLocationIcon.setVisibility(View.VISIBLE);
+           addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //Do nothing
+               }
+           });
+           addLocationText.setVisibility(View.VISIBLE);
+           addLocationText.setText(R.string.add_new_place_text);
+           addToPlacesButton.setVisibility(View.VISIBLE);
+           progressBar.setVisibility(View.GONE);
+       }
     }
 
     private void playProgressBar(){
-        addNewLocationIcon.setVisibility(View.GONE);
-        addLocationText.setVisibility(View.GONE);
-        addToPlacesButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        if (addNewLocationIcon!=null){
+            addNewLocationIcon.setVisibility(View.GONE);
+            addLocationText.setVisibility(View.GONE);
+            addToPlacesButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
 

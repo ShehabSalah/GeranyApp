@@ -26,6 +26,7 @@ import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.locationlib.GET_Connector;
 import com.shehabsalah.locationlib.GetInfoAsyncTask;
 import com.shehabsalah.locationlib.UriBuilder;
+import com.twitter.sdk.android.core.models.Place;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,7 +142,7 @@ public abstract class MyPlacesController implements LocationListener{
                     isDefault = true;
                     getTheCurrentLocation();
                 }else{
-                    myPlacesLoadFinish();
+                    myPlacesLoadFinish(currentLocation, true);
                 }
 
             }
@@ -177,12 +178,9 @@ public abstract class MyPlacesController implements LocationListener{
      * */
     public boolean deleteMyPlaceAtPosition(Context context, int position){
         if (Config.isNetworkConnected(context)){
-            //ToDo: remove the place from the server (IMPLEMENTATION: #5)
-            /**From position get MyPlace object at this index myPlaces.get(position) then get the place id*/
-
-            /**FAKE IMPLEMENTATION TO REMOVE**/
+            MyPlaces place = myPlaces.get(position);
+            placeRef.child(place.getPlaceId()).removeValue();
             myPlaces.remove(position);
-            /**FAKE IMPLEMENTATION TO REMOVE**/
             return true;
         }else{
             return false;
@@ -193,9 +191,9 @@ public abstract class MyPlacesController implements LocationListener{
      * This method checks if the given place exists in the user places or not.
      * @return boolean true if the place is exist and false if not.
      * */
-    public boolean checkIfCurrentLocationExits(){
+    public boolean checkIfCurrentLocationExits(String location){
         for (int i = 0; i < myPlaces.size(); i++){
-            if(currentLocation.equals(myPlaces.get(i).getPlaceAddress()))
+            if(location.equals(myPlaces.get(i).getPlaceAddress()))
                 return true;
         }
         return false;
@@ -276,7 +274,7 @@ public abstract class MyPlacesController implements LocationListener{
                     if (jsonObject != null){
                         try {
                             currentLocation = jsonObject.getString("address");
-                            myPlacesLoadFinish();
+                            myPlacesLoadFinish(currentLocation, true);
                             if (isDefault){
                                 addDefaultLocation();
                                 isDefault = false;
@@ -285,6 +283,7 @@ public abstract class MyPlacesController implements LocationListener{
                             e.printStackTrace();
                         }
                     }else{
+                        myPlacesLoadFinish(null, false);
                         Toast.makeText(activity,R.string.no_internet,Toast.LENGTH_LONG).show();
                     }
                 }
@@ -297,7 +296,7 @@ public abstract class MyPlacesController implements LocationListener{
         return currentLocation;
     }
 
-    public abstract void myPlacesLoadFinish();
+    public abstract void myPlacesLoadFinish(String location, boolean state);
 
     private void addDefaultLocation(){
         addNewPlace(currentLocation, Config.DEFAULT_PLACE_NAME, true);

@@ -1,7 +1,6 @@
 package com.shehabsalah.geranyapp.views.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -15,11 +14,9 @@ import android.view.ViewGroup;
 
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.MyPlacesController;
-import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.model.User;
+import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.geranyapp.views.adapters.MyPlacesListAdapter;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +41,7 @@ public class MyPlacesListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.my_places_layout, container, false);
+        View mainView = inflater.inflate(R.layout.list_layout, container, false);
         ButterKnife.bind(this, mainView);
 
         //setup the recycler view
@@ -82,10 +79,14 @@ public class MyPlacesListFragment extends Fragment {
         swipeToRefresh.setRefreshing(true);
         myPlacesController = new MyPlacesController(userProfile, getActivity()) {
             @Override
-            public void myPlacesLoadFinish() {
-                myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
-                recyclerView.setAdapter(myPlacesListAdapter);
-                swipeToRefresh.setRefreshing(false);
+            public void myPlacesLoadFinish(String location, boolean state) {
+                if (state){
+                    myPlacesListAdapter = new MyPlacesListAdapter(myPlacesController, getActivity());
+                    recyclerView.setAdapter(myPlacesListAdapter);
+                    swipeToRefresh.setRefreshing(false);
+                }else{
+                    Config.toastLong(getActivity(), getString(R.string.no_internet));
+                }
             }
         };
         myPlacesController.fillPlaces();

@@ -33,4 +33,16 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="profile_image_size">120dp</dimen>
     <dimen name="profile_height">300dp</dimen>
+
+
+    <!-- POSTS -->
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_corner_radius">3dp</dimen>
+    <dimen name="post_profile_pic_size">50dp</dimen>
+    <dimen name="post_border_size">1dp</dimen>
+    <dimen name="more_icon_width">48dp</dimen>
+    <dimen name="more_icon_height">25dp</dimen>
+    <dimen name="post_small_text_size">12sp</dimen>
+    <dimen name="post_image_max_height">200dp</dimen>
+    <dimen name="interaction_icon_size">26dp</dimen>
 </resources>
