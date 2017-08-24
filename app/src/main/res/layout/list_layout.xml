@@ -6,6 +6,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white_color"
     tools:context=".views.fragments.MyPlacesListFragment">
+    <TextView
+        android:id="@+id/no_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/shape_edge_padding"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/shape_edge_padding"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/shape_edge_padding"
+        android:visibility="gone"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/my_places_swipe_refresh_layout"

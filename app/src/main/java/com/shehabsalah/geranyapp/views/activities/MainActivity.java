@@ -70,7 +70,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                 case R.id.navigation_home:
                     setTitle(getString(R.string.title_home));
                     postFragment = new PostFragment();
-                    postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress());
+                    postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
                             .commit();
@@ -103,6 +103,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                 case R.id.navigation_profile:
                     Intent profile_intent = new Intent(MainActivity.this, ProfileActivity.class);
                     profile_intent.putExtra(Config.USER_INFO, user);
+                    profile_intent.putExtra(Config.PLACES_EXTRA, myPlacesController.getActivePlace().getPlaceAddress());
                     startActivity(profile_intent);
                     return false;
             }
@@ -242,7 +243,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
      * This method load all data needed in the application
      * */
     private void loadData(){
-        //ToDo: make this method load all data from the server onCreate
         //requestLocationPermission();
         categoriesController = new CategoriesController();
         categoriesController.fillCategories();

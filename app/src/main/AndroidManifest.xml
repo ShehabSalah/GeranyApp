@@ -34,6 +34,7 @@
             android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NewPostStyle" />
+
         <activity
             android:name=".views.activities.ProfileActivity"
             android:label="@string/title_activity_profile"
@@ -41,12 +42,24 @@
             android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".views.activities.SettingsActivity"
             android:parentActivityName=".views.activities.ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.activities.AddUserInfoActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+
+        <activity
+            android:name=".views.activities.AddUserInfoActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.activities.CollaboratorActivity"
+            android:label="@string/title_activity_collaborator"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".views.activities.MainActivity"/>
+
     </application>
 
 </manifest>

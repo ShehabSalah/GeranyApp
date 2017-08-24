@@ -20,10 +20,11 @@ public class Config {
     public static final String MY_PLACES_EXTRA              = "extra_places";
     public static final String CATEGORIES_EXTRA             = "extra_categories";
     public static final String USER_INFO                    = "extra_user_info";
-    public static final String LOGOUT_EXTRA                 = "logout_extra";
+    public static final String PLACES_EXTRA                 = "places_extra";
     public static final String USER_HAS_EMAIL               = "user_has_email";
     public static final String USER_HAS_NUMBER              = "user_has_number";
-    public static final String FACK_IMAGE                   = "http://www.platformhouse.com/fack_image.jpg";
+    public static final String POST_ID_EXTRA                = "post_id";
+    public static final String FAKE_IMAGE                   = "http://www.platformhouse.com/fack_image.jpg";
 
     //Database roots
     public static final String DB_POSTS                     = "posts";
@@ -46,15 +47,23 @@ public class Config {
     public static final String DEFAULT_PLACE_NAME           = "Default Place";
 
     //API Links
-    public static final String SCHEME                   = "http";
-    public static final String BASE_URL                 = "www.platformhouse.com";
-    public static final String LOCATION_URL             = "/location";
-    public static final String FIND_LOCATION            = "finder.php";
+    public static final String SCHEME                       = "http";
+    public static final String BASE_URL                     = "www.platformhouse.com";
+    public static final String LOCATION_URL                 = "/location";
+    public static final String FIND_LOCATION                = "finder.php";
 
     //Params
-    public static final String LAT = "lat";
-    public static final String LON = "lon";
+    public static final String LAT                          = "lat";
+    public static final String LON                          = "lon";
 
+    //Posts Indicators
+    public static final int HOME_POSTS                      = 0;
+    public static final int PROFILE_POSTS                   = 1;
+
+    //Sections
+    public static final int FEEDBACK_SECTION                = 1;
+    public static final int VOLUNTEER_SECTION               = 2;
+    public static final int DONATION_SECTION                = 3;
 
     /**
      * This method used to display short toasts.

@@ -96,7 +96,8 @@ public abstract class PostController {
     }
 
     public void getHomePostsList(final String activePlace){
-        Query query = postRef.orderByChild(Config.LOCATION);
+        Query query = postRef.orderByChild(Config.LOCATION)
+                .equalTo(activePlace);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -110,7 +111,7 @@ public abstract class PostController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                onLoadFinish();
             }
         });
     }
@@ -126,13 +127,13 @@ public abstract class PostController {
                     Post post = postSnap.getValue(Post.class);
                     posts.add(0,post);
                 }
+                onLoadFinish();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                onLoadFinish();
             }
         });
-        onLoadFinish();
     }
 
     public ArrayList<Post> getPosts() {

@@ -54,8 +54,8 @@
                                 android:layout_height="wrap_content"
                                 tools:text="@string/username"
                                 android:textStyle="bold"
-                                android:textColor="#262626"
-                                android:textSize="16sp"
+                                android:textColor="@color/black_color"
+                                android:textSize="@dimen/text_medium_size"
                                 android:paddingBottom="1dp"/>
                             <RelativeLayout
                                 android:layout_width="0dp"

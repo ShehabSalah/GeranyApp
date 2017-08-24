@@ -115,7 +115,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
      * */
     private void addMobileNumberToUserInfo(String mobile){
        if (Config.isNetworkConnected(getApplicationContext())){
-           //ToDo: add the user mobile number to the user info in the database
            user.setPhoneNumber(mobile);
            userRef.child(user.getProfileUid()).setValue(user);
            isNumberExist = true;

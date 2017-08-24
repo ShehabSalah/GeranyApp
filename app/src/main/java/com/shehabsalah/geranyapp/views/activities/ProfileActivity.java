@@ -17,8 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shehabsalah.geranyapp.R;
+import com.shehabsalah.geranyapp.controllers.MyPlacesController;
+import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.fragments.PostFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -32,11 +35,7 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
     @BindView(R.id.username_profile) TextView usernameProfile;
     @BindView(R.id.email_profile) TextView emailProfile;
     @BindView(R.id.username_profile_toolbar) TextView usernameProfileToolbar;
-    @BindView(R.id.profile_picture)
-    CircleImageView profilePicture;
-
-    //ToDo: display user information
-    //ToDo: create the setting activity
+    @BindView(R.id.profile_picture) CircleImageView profilePicture;
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -59,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
         appBar.addOnOffsetChangedListener(this);
 
         toolbar.inflateMenu(R.menu.menu_profile);
-        toolbar.setTitle("");
+       // ToDo: i removed this line toolbar.setTitle(""); must see later if it effect on the profile view or not
         setSupportActionBar(toolbar);
         startAlphaAnimation(usernameProfileToolbar, 0, View.INVISIBLE);
 
@@ -70,12 +69,14 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
                 onSupportNavigateUp();
             }
         });
+
     }
     private void bindActivity() {
 
         Intent intent = getIntent();
-        if (intent.hasExtra(Config.USER_INFO)){
+        if (intent.hasExtra(Config.USER_INFO) && intent.hasExtra(Config.PLACES_EXTRA)){
             user        = intent.getParcelableExtra(Config.USER_INFO);
+            String activePlace = intent.getStringExtra(Config.PLACES_EXTRA);
             usernameProfile.setText(user.getProfileDisplayName());
             usernameProfileToolbar.setText(user.getProfileDisplayName());
             if (user.getProfileEmail()!=null){
@@ -86,6 +87,12 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
                     .placeholder(R.mipmap.profile)
                     .error(R.mipmap.profile)
                     .into(profilePicture);
+
+            PostFragment postFragment = new PostFragment();
+            postFragment.setExtra(user, activePlace,Config.PROFILE_POSTS);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                    .commit();
         }
     }
     @Override
@@ -93,8 +100,6 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
-
-    //ToDo: handle posts after creating post layout in home fragment
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {

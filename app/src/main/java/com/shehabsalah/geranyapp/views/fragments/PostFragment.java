@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.controllers.PostController;
 import com.shehabsalah.geranyapp.model.User;
+import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.geranyapp.views.adapters.PostAdapter;
 
 import butterknife.BindView;
@@ -36,6 +37,7 @@ public class PostFragment extends Fragment {
     TextView noPosts;
     PostAdapter postAdapter;
     User userProfile;
+    int postIndicator;
     PostController postController;
     String activePlace;
 
@@ -81,9 +83,9 @@ public class PostFragment extends Fragment {
                 swipeToRefresh.setRefreshing(false);
             }
         };
-        postController.getHomePostsList(activePlace);
-
-
+        if (postIndicator == Config.HOME_POSTS)
+            postController.getHomePostsList(activePlace);
+        else postController.getProfilePostsList(userProfile);
 
         return mainView;
     }
@@ -109,11 +111,14 @@ public class PostFragment extends Fragment {
                 swipeToRefresh.setRefreshing(false);
             }
         };
-        postController.getHomePostsList(activePlace);
+        if (postIndicator == Config.HOME_POSTS)
+            postController.getHomePostsList(activePlace);
+        else postController.getProfilePostsList(userProfile);
     }
 
-    public void setExtra(User userProfile, String activePlace){
+    public void setExtra(User userProfile, String activePlace, int postIndicator){
         this.userProfile = userProfile;
         this.activePlace = activePlace;
+        this.postIndicator = postIndicator;
     }
 }

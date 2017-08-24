@@ -49,7 +49,6 @@
         android:paddingLeft="@dimen/shape_edge_padding"
         android:paddingRight="@dimen/shape_edge_padding"
         >
-        <!--ToDo remove android:text-->
         <TextView
             android:id="@+id/current_location_edit_dialog"
             android:layout_width="wrap_content"
@@ -123,7 +122,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:padding="@dimen/shape_edge_extra_small_padding"
-            android:text="@string/cancel_button"
+            android:text="@android:string/cancel"
             android:textSize="@dimen/text_medium_size"
             android:layout_alignBaseline="@+id/save_button_location_dialog"
             android:layout_alignBottom="@+id/save_button_location_dialog"

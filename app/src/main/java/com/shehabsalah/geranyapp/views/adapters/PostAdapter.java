@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +30,7 @@ import com.shehabsalah.geranyapp.controllers.PostController;
 import com.shehabsalah.geranyapp.model.Collaborator;
 import com.shehabsalah.geranyapp.model.Dislike;
 import com.shehabsalah.geranyapp.model.Post;
+import com.shehabsalah.geranyapp.model.ReportPost;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 import com.squareup.picasso.Picasso;
@@ -33,6 +38,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by ShehabSalah on 8/23/17.
@@ -48,9 +55,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     private DatabaseReference myRefDislikes;
     private DatabaseReference myRefVolun;
     private DatabaseReference myRefDonat;
+    private DatabaseReference reportPosts;
     private AlertDialog alertDialog;
     private int lastPosition = -1;
-
 
     public PostAdapter(Context context, PostController postController, User userProfile) {
         this.postController = postController;
@@ -60,6 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
         myRefDislikes = database.getReference(Config.DB_DISLIKES);
         myRefVolun = database.getReference(Config.DB_VOLUNTEER);
         myRefDonat = database.getReference(Config.DB_DONATIONS);
+        reportPosts = database.getReference(Config.DB_REPORT_POST);
         myRefDislikes.keepSynced(true);
         myRefVolun.keepSynced(true);
         myRefDonat.keepSynced(true);
@@ -111,14 +119,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             postContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //ToDo: make intent to Collaborators activity
+                    //ToDo: make intent to post details
                 }
             });
 
             more_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // ToDo: open bottom sheet which display the delete & report
+                    Post post = postController.getPosts().get(getAdapterPosition());
+                    showPostMenu(post, getAdapterPosition(), v);
                 }
             });
 
@@ -197,7 +206,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        //setAnimation(holder.itemView, position);
+        setAnimation(holder.itemView, position);
     }
 
     @Override
@@ -332,10 +341,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
                 String string = editText.getText().toString().trim();
                 //Check if the user entered a non-white space characters
                 if (!string.isEmpty()){
-                    //ToDo: add feedback here
                     submitAddingDislike(post, string);
                     alertDialog.cancel();
-
                 }else{
                     Config.toastLong(context, context.getString(R.string.empty_feedback));
                 }
@@ -406,5 +413,52 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
         }
+    }
+    private void showPostMenu(final Post post, int position, View view){
+        if (post.getUser_id().equals(userProfile.getProfileUid())){
+            //Show delete menu
+            deleteMenu(position,  view);
+        }else{
+            reportMenu(post, view);
+        }
+    }
+
+    private void deleteMenu(final int position, View v){
+        //Creating the instance of PopupMenu
+        Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+        PopupMenu popup = new PopupMenu(wrapper, v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.post_delete_item_menu, popup.getMenu());
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                deleteAlert(position);
+                return true;
+            }
+        });
+        popup.show();
+    }
+
+    private void reportMenu(final Post post, View v){
+        Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.MyPopupMenu);
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(wrapper, v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.post_report_item_menu, popup.getMenu());
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Config.toastShort(context, context.getResources().getString(R.string.report_message));
+                ReportPost reportPostsClass = new ReportPost(userProfile.getProfileUid(),userProfile.getProfileDisplayName(),userProfile.getProfilePhotoUrl(),post.getDate() +" "+userProfile.getProfileUid());
+                reportPosts.child(post.getDate() +" "+userProfile.getProfileUid()).setValue(reportPostsClass);
+                return true;
+            }
+        });
+
+        popup.show();
     }
 }

@@ -5,11 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,16 +32,11 @@ import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.locationlib.UploadImageThread;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.R.attr.bitmap;
-import static android.R.attr.visibility;
 
 public class NewPostActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     @BindView(R.id.add_image)
@@ -262,7 +254,7 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
             }else{
                 uploadLayout();
                 postController.addNewPost(postTextStr, categoryNameStr,
-                        myPlaces.getPlaceAddress(), Config.FACK_IMAGE, user);
+                        myPlaces.getPlaceAddress(), Config.FAKE_IMAGE, user);
                 progressBar.setProgress(100);
             }
         }else{
