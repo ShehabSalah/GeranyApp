@@ -51,8 +51,9 @@
                         tools:text="@string/username" />
 
                     <RelativeLayout
+                        android:id="@+id/menu_button"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.5">
 
                         <ImageView
@@ -60,6 +61,7 @@
                             android:layout_width="@dimen/more_icon_width"
                             android:layout_height="@dimen/more_icon_height"
                             android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_expand_more" />
                     </RelativeLayout>
                 </LinearLayout>

@@ -2,12 +2,13 @@ package com.shehabsalah.geranyapp.views.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +33,7 @@ import com.shehabsalah.geranyapp.model.Post;
 import com.shehabsalah.geranyapp.model.ReportPost;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.activities.CollaboratorActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -51,7 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     private Context context;
     private User userProfile;
     private final String DELETE_POST = "this post";
-    private FirebaseDatabase database;
+    private final String POST_NAME = "post";
     private DatabaseReference myRefDislikes;
     private DatabaseReference myRefVolun;
     private DatabaseReference myRefDonat;
@@ -63,7 +64,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
         this.postController = postController;
         this.context = context;
         this.userProfile = userProfile;
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRefDislikes = database.getReference(Config.DB_DISLIKES);
         myRefVolun = database.getReference(Config.DB_VOLUNTEER);
         myRefDonat = database.getReference(Config.DB_DONATIONS);
@@ -120,6 +121,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
                 @Override
                 public void onClick(View v) {
                     //ToDo: make intent to post details
+
+                    Intent intent = new Intent(context, CollaboratorActivity.class);
+                    intent.putExtra(Config.POST_ID_EXTRA,
+                            postController.getPosts().get(getAdapterPosition()).getDate());
+                    intent.putExtra(Config.USER_INFO, userProfile);
+                    context.startActivity(intent);
                 }
             });
 
@@ -132,6 +139,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             });
 
         }
+
 
     }
 
@@ -206,7 +214,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        setAnimation(holder.itemView, position);
+        //setAnimation(holder.itemView, position);
     }
 
     @Override
@@ -235,14 +243,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
      * @param position position to delete
      * */
     private void deleteAlert(final int position){
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
-        builder.setTitle(context.getString(R.string.delete_place_header))
-                .setMessage(String.format(context.getString(R.string.delete_place_message), DELETE_POST))
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(String.format(context.getString(R.string.delete_header), POST_NAME))
+                .setMessage(String.format(context.getString(R.string.delete_message), DELETE_POST))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
@@ -452,8 +456,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Config.toastShort(context, context.getResources().getString(R.string.report_message));
-                ReportPost reportPostsClass = new ReportPost(userProfile.getProfileUid(),userProfile.getProfileDisplayName(),userProfile.getProfilePhotoUrl(),post.getDate() +" "+userProfile.getProfileUid());
+                Config.toastShort(context, String.format(context.getResources().getString(R.string.report_message), POST_NAME));
+                ReportPost reportPostsClass = new ReportPost(post.getDate() +" "+userProfile.getProfileUid(), userProfile.getProfileUid(),userProfile.getProfileDisplayName(),userProfile.getProfilePhotoUrl());
                 reportPosts.child(post.getDate() +" "+userProfile.getProfileUid()).setValue(reportPostsClass);
                 return true;
             }

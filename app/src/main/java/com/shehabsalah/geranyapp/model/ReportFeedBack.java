@@ -12,23 +12,23 @@ public class ReportFeedBack implements Parcelable{
     private String user_id;
     private String username;
     private String profile_pic;
-    private String post_id;
+    private String feedbackId;
 
     public ReportFeedBack() {
     }
 
-    public ReportFeedBack(String reportId, String user_id, String username, String profile_pic, String post_id) {
+    public ReportFeedBack(String user_id, String username, String profile_pic, String feedbackId) {
         this.user_id        = user_id;
         this.username       = username;
         this.profile_pic    = profile_pic;
-        this.post_id        = post_id;
+        this.feedbackId     = feedbackId;
     }
 
     protected ReportFeedBack(Parcel in) {
         user_id             = in.readString();
         username            = in.readString();
         profile_pic         = in.readString();
-        post_id             = in.readString();
+        feedbackId          = in.readString();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ReportFeedBack implements Parcelable{
         dest.writeString(user_id);
         dest.writeString(username);
         dest.writeString(profile_pic);
-        dest.writeString(post_id);
+        dest.writeString(feedbackId);
     }
 
     @Override
@@ -80,11 +80,11 @@ public class ReportFeedBack implements Parcelable{
         this.profile_pic = profile_pic;
     }
 
-    public String getPost_id() {
-        return post_id;
+    public String getFeedbackId() {
+        return feedbackId;
     }
 
-    public void setPost_id(String post_id) {
-        this.post_id = post_id;
+    public void setFeedbackId(String feedbackId) {
+        this.feedbackId = feedbackId;
     }
 }

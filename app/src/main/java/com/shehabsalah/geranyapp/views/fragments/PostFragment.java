@@ -50,8 +50,7 @@ public class PostFragment extends Fragment {
         //setup the recycler view
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(verticalLayoutManager);
-        //add ItemDecoration
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(verticalLayoutManager);
         //change loading colors
         swipeToRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -77,8 +76,6 @@ public class PostFragment extends Fragment {
                     noPosts.setVisibility(View.GONE);
                 }
                 postAdapter = new PostAdapter(getActivity(), postController, userProfile);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(postAdapter);
                 swipeToRefresh.setRefreshing(false);
             }
@@ -105,8 +102,6 @@ public class PostFragment extends Fragment {
                     noPosts.setVisibility(View.GONE);
                 }
                 postAdapter = new PostAdapter(getActivity(), postController, userProfile);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(postAdapter);
                 swipeToRefresh.setRefreshing(false);
             }

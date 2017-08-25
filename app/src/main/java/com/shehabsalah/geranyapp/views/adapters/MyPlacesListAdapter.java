@@ -35,6 +35,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     private Context context;
     private int activePosition = 0;
     private AlertDialog alertDialog;
+    private final String PLACE_SECTION_NAME = "place";
 
     public MyPlacesListAdapter(MyPlacesController myPlacesController, Context context) {
         this.myPlacesController = myPlacesController;
@@ -184,17 +185,12 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
      * @param position position to delete
      * */
     private void deleteAlert(final int position){
-        AlertDialog.Builder builder;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String placeName = myPlacesController.getMyPlaces().get(position).getPlaceNickname();
         if (placeName == null || placeName.isEmpty())
             placeName = myPlacesController.getMyPlaces().get(position).getPlaceAddress();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
-        builder.setTitle(context.getString(R.string.delete_place_header))
-                .setMessage(String.format(context.getString(R.string.delete_place_message), placeName))
+        builder.setTitle(String.format(context.getString(R.string.delete_header), PLACE_SECTION_NAME))
+                .setMessage(String.format(context.getString(R.string.delete_message), placeName))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete

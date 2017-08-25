@@ -40,9 +40,9 @@
     <string name="empty_name_error_message">"Cannot save an empty name! Please enter the place name."</string>
     <string name="empty_feedback">"Cannot save an empty feedback! Please enter a valid feedback."</string>
 
-    <!--Delete Location Dialog-->
-    <string name="delete_place_header">Delete Place</string>
-    <string name="delete_place_message">Are you sure you want to delete %s?</string>
+    <!--Delete Dialog-->
+    <string name="delete_header">Delete %s</string>
+    <string name="delete_message">Are you sure you want to delete %s?</string>
 
     <!--Selected Places-->
     <string name="selected_place_message">%s has been selected.</string>
@@ -202,7 +202,7 @@
     <string name="feedback_body_header">Why you dislike this post?</string>
     <string name="home_posts_area">There is no posts in your area.</string>
     <string name="profile_posts_area">You do not have any posts yet.</string>
-    <string name="report_message">This post has been reported.</string>
+    <string name="report_message" formatted="false">This %s has been reported.</string>
     <string name="title_activity_collaborator">CollaboratorActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

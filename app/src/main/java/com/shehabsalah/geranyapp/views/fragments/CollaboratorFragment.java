@@ -23,6 +23,7 @@ import com.shehabsalah.geranyapp.model.Dislike;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.geranyapp.views.adapters.CollaboratorAdapter;
+import com.shehabsalah.geranyapp.views.adapters.FeedbackAdapter;
 
 import java.util.ArrayList;
 
@@ -181,15 +182,15 @@ public class CollaboratorFragment extends Fragment {
 
     }
 
-    private void displayFeedback(ArrayList<Dislike> dislikes){
-        if (dislikes.isEmpty()){
+    private void displayFeedback(ArrayList<Dislike> feedbackArrayList){
+        if (feedbackArrayList.isEmpty()){
             noResult.setVisibility(View.VISIBLE);
             noResult.setText(getResources().getString(R.string.no_feedback));
         }else{
             noResult.setVisibility(View.GONE);
             //ToDo: create adapter for feedback and send it to the recyclerView
-            //CollaboratorAdapter collaboratorAdapter = new CollaboratorAdapter(getActivity(), collaborators);
-            //recyclerView.setAdapter(collaboratorAdapter);
+            FeedbackAdapter feedbackAdapter = new FeedbackAdapter(getActivity(), feedbackArrayList, userProfile);
+            recyclerView.setAdapter(feedbackAdapter);
         }
     }
 

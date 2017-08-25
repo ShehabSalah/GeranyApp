@@ -89,14 +89,6 @@ public class Dislike implements Parcelable{
         this.profile_pic = profile_pic;
     }
 
-    public String geDislikeId() {
-        return dislikeId;
-    }
-
-    public void setId(String dislikeId) {
-        this.dislikeId = dislikeId;
-    }
-
     public String getFeedBack() {
         return feedBack;
     }
@@ -113,4 +105,11 @@ public class Dislike implements Parcelable{
         this.post_id = post_id;
     }
 
+    public String getDislikeId() {
+        return dislikeId;
+    }
+
+    public void setDislikeId(String dislikeId) {
+        this.dislikeId = dislikeId;
+    }
 }

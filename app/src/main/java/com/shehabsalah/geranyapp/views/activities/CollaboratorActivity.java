@@ -81,7 +81,7 @@ public class CollaboratorActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return CollaboratorFragment.newInstance(position, postId, userProfile);
+            return CollaboratorFragment.newInstance(position + 1, postId, userProfile);
         }
 
         @Override
@@ -92,11 +92,11 @@ public class CollaboratorActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case Config.FEEDBACK_SECTION:
+                case Config.FEEDBACK_SECTION - 1:
                     return "SECTION 1";
-                case Config.VOLUNTEER_SECTION:
+                case Config.VOLUNTEER_SECTION - 1:
                     return "SECTION 2";
-                case Config.DONATION_SECTION:
+                case Config.DONATION_SECTION - 1:
                     return "SECTION 3";
             }
             return  super.getPageTitle(position);
