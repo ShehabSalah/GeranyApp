@@ -89,6 +89,10 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.MyView
                 .into(holder.profilePicture);
         holder.username.setText(feedback.get(position).getUsername());
         holder.feedbackText.setText(feedback.get(position).getFeedBack());
+        if (feedback.get(position).getUser_id().equals(userProfile.getProfileUid())){
+            //Show delete menu
+            holder.menu_button.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -97,17 +101,11 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.MyView
     }
 
     private void showFeedbackMenu(Dislike feedback, View view, View button){
-        if (feedback.getUser_id().equals(userProfile.getProfileUid())){
-            //Show delete menu
-            button.setVisibility(View.GONE);
-        }else{
-            reportMenu(feedback, view);
-            button.setVisibility(View.GONE);
-        }
+        reportMenu(feedback, view, button);
     }
 
-    private void reportMenu(final Dislike feedback, View v){
-        Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.MyPopupMenu);
+    private void reportMenu(final Dislike feedback, View v, final View button){
+        Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
         //Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(wrapper, v);
         //Inflating the Popup using xml file
@@ -117,11 +115,12 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.MyView
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Config.toastShort(context, String.format(context.getResources().getString(R.string.report_message), REPORT_FEEDBACK));
                 ReportFeedBack reportFeedbackClass = new ReportFeedBack(userProfile.getProfileUid(),
                         userProfile.getProfileDisplayName(),userProfile.getProfilePhotoUrl(),
                         feedback.getDislikeId());
                 reportFeedback.child(feedback.getDislikeId()+" "+userProfile.getProfileUid()).setValue(reportFeedbackClass);
+                button.setVisibility(View.GONE);
+                Config.toastShort(context, String.format(context.getResources().getString(R.string.report_message), REPORT_FEEDBACK));
                 return true;
             }
         });

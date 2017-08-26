@@ -311,15 +311,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     }
 
     /**
-     * This method will display the (Edit Location) form to enable users to enter their preferred name
+     * This method will display the (Feedback Post Dialog) form to enable users to enter their preferred name
      * to their current location and save it.
      * */
     private void showFeedbackDialog(final Post post){
         View v = LayoutInflater.from(context).inflate(R.layout.add_new_place_rename_layout,null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final EditText editText = (EditText)v.findViewById(R.id.edit_text_location_dialog);
+        final EditText locationText = (EditText)v.findViewById(R.id.edit_text_location_dialog);
+        final EditText editText = (EditText)v.findViewById(R.id.edit_text_feedback);
         ImageView feedBackHeaderIcon = (ImageView)v.findViewById(R.id.location_edit_icon);
         TextView headerDialogText = (TextView)v.findViewById(R.id.dialog_header);
+        locationText.setVisibility(View.GONE);
+        editText.setVisibility(View.VISIBLE);
 
         TextView cancel = (TextView)v.findViewById(R.id.cancel_button_location_dialog);
         TextView save = (TextView)v.findViewById(R.id.save_button_location_dialog);

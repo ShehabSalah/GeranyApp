@@ -35,7 +35,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     private Context context;
     private int activePosition = 0;
     private AlertDialog alertDialog;
-    private final String PLACE_SECTION_NAME = "place";
+    private final String PLACE_SECTION_NAME = "lace";
 
     public MyPlacesListAdapter(MyPlacesController myPlacesController, Context context) {
         this.myPlacesController = myPlacesController;
