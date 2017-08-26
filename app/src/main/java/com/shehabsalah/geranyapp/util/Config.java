@@ -60,10 +60,20 @@ public class Config {
     public static final int HOME_POSTS                      = 0;
     public static final int PROFILE_POSTS                   = 1;
 
-    //Sections
+    //Collaborators Section number
     public static final int FEEDBACK_SECTION                = 1;
     public static final int VOLUNTEER_SECTION               = 2;
     public static final int DONATION_SECTION                = 3;
+
+    //Collaborators Fragment Indicators
+    public static final int FEEDBACK_INDICATOR              = 0;
+    public static final int VOLUNTEER_INDICATOR             = 1;
+    public static final int DONATION_INDICATOR              = 2;
+
+    //Collaborators section name
+    public static final String FEEDBACK_NAME                = "Feedback";
+    public static final String VOLUNTEERS_NAME              = "Volunteers";
+    public static final String DONATION_NAME                = "Donation";
 
     /**
      * This method used to display short toasts.

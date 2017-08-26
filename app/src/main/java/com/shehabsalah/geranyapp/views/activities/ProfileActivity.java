@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
         appBar.addOnOffsetChangedListener(this);
 
         toolbar.inflateMenu(R.menu.menu_profile);
+        toolbar.setTitle("");
        // ToDo: i removed this line toolbar.setTitle(""); must see later if it effect on the profile view or not
         setSupportActionBar(toolbar);
         startAlphaAnimation(usernameProfileToolbar, 0, View.INVISIBLE);
@@ -91,7 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
             PostFragment postFragment = new PostFragment();
             postFragment.setExtra(user, activePlace,Config.PROFILE_POSTS);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                    .replace(R.id.profile_container, postFragment, Config.POST_FRAGMENT)
                     .commit();
         }
     }

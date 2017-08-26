@@ -49,28 +49,6 @@ public class CollaboratorActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_collaborator, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private SectionsPagerAdapter(FragmentManager fm) {
@@ -92,12 +70,12 @@ public class CollaboratorActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case Config.FEEDBACK_SECTION - 1:
-                    return "SECTION 1";
-                case Config.VOLUNTEER_SECTION - 1:
-                    return "SECTION 2";
-                case Config.DONATION_SECTION - 1:
-                    return "SECTION 3";
+                case Config.FEEDBACK_INDICATOR:
+                    return Config.FEEDBACK_NAME;
+                case Config.VOLUNTEER_INDICATOR:
+                    return Config.VOLUNTEERS_NAME;
+                case Config.DONATION_INDICATOR:
+                    return Config.DONATION_NAME;
             }
             return  super.getPageTitle(position);
         }
