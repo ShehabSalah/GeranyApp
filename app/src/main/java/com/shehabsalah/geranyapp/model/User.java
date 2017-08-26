@@ -136,4 +136,6 @@ public class User implements Parcelable{
     public void setAllowDisplayingEmail(boolean allowDisplayingEmail) {
         this.allowDisplayingEmail = allowDisplayingEmail;
     }
+
+
 }

@@ -1,6 +1,12 @@
 package com.shehabsalah.geranyapp.views.fragments;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,17 +41,19 @@ import butterknife.ButterKnife;
  *
  */
 
-public class CollaboratorFragment extends Fragment {
+public class CollaboratorFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     @BindView(R.id.my_places_swipe_refresh_layout) SwipeRefreshLayout swipeToRefresh;
     @BindView(R.id.my_places_list) RecyclerView recyclerView;
     @BindView(R.id.no_result) TextView noResult;
 
     private FirebaseDatabase database;
-
+    private final int REQUEST_CALL_PERMISSION = 10;
     int sectionNumber = -1;
     String postId = null;
     User userProfile;
+    String collaberatorNumber = null;
+
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -98,6 +106,7 @@ public class CollaboratorFragment extends Fragment {
                 refreshContent();
             }
         });
+        swipeToRefresh.setRefreshing(true);
         switch(sectionNumber){
             case Config.FEEDBACK_SECTION:
                 loadFeedBack();
@@ -120,7 +129,6 @@ public class CollaboratorFragment extends Fragment {
                 public void onDataChange(DataSnapshot snapshot) {
                     ArrayList<Dislike> dislikes = new ArrayList<>();
                     for (DataSnapshot dislikeSnap: snapshot.getChildren()) {
-                        //ToDo: make the feedback adapter :D
                         Dislike dislike = dislikeSnap.getValue(Dislike.class);
                         dislikes.add(0,dislike);
 
@@ -136,6 +144,7 @@ public class CollaboratorFragment extends Fragment {
         }else{
             noResult.setVisibility(View.VISIBLE);
             noResult.setText(getResources().getString(R.string.no_internet));
+            swipeToRefresh.setRefreshing(false);
         }
     }
 
@@ -167,6 +176,7 @@ public class CollaboratorFragment extends Fragment {
         }else{
             noResult.setVisibility(View.VISIBLE);
             noResult.setText(getResources().getString(R.string.no_internet));
+            swipeToRefresh.setRefreshing(false);
         }
     }
 
@@ -174,10 +184,18 @@ public class CollaboratorFragment extends Fragment {
         if (collaborators.isEmpty()){
             noResult.setVisibility(View.VISIBLE);
             noResult.setText(sectionNumber == Config.VOLUNTEER_SECTION? getResources().getString(R.string.no_volunteers) : getResources().getString(R.string.no_donation));
+            swipeToRefresh.setRefreshing(false);
         }else{
             noResult.setVisibility(View.GONE);
-            CollaboratorAdapter collaboratorAdapter = new CollaboratorAdapter(getActivity(), collaborators);
+            CollaboratorAdapter collaboratorAdapter = new CollaboratorAdapter(getActivity(), collaborators) {
+                @Override
+                public void callPermission(String phoneNumber) {
+                    collaberatorNumber = phoneNumber;
+                    requestCallPermission();
+                }
+            };
             recyclerView.setAdapter(collaboratorAdapter);
+            swipeToRefresh.setRefreshing(false);
         }
 
     }
@@ -186,11 +204,12 @@ public class CollaboratorFragment extends Fragment {
         if (feedbackArrayList.isEmpty()){
             noResult.setVisibility(View.VISIBLE);
             noResult.setText(getResources().getString(R.string.no_feedback));
+            swipeToRefresh.setRefreshing(false);
         }else{
             noResult.setVisibility(View.GONE);
-            //ToDo: create adapter for feedback and send it to the recyclerView
             FeedbackAdapter feedbackAdapter = new FeedbackAdapter(getActivity(), feedbackArrayList, userProfile);
             recyclerView.setAdapter(feedbackAdapter);
+            swipeToRefresh.setRefreshing(false);
         }
     }
 
@@ -204,5 +223,25 @@ public class CollaboratorFragment extends Fragment {
                 loadCollaborators(sectionNumber);
                 break;
         }
+    }
+    private void requestCallPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
+        } else {
+            callUser();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CALL_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            callUser();
+        }
+    }
+
+    private void callUser(){
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + collaberatorNumber));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+        startActivity(intent);
     }
 }

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/profile_dialog_header_size">
             <ImageView
-                android:id="@+id/location_edit_icon"
+                android:id="@+id/close_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/shape_edge_padding"
