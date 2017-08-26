@@ -17,14 +17,14 @@ import android.os.Bundle;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
 import com.squareup.picasso.Picasso;
 
 public class SettingsActivity extends AppCompatActivity {
-    public static SharedPreferences.Editor mEditor;
-    private static SharedPreferences mUpdate;
     static User user;
 
     @Override
@@ -37,16 +37,16 @@ public class SettingsActivity extends AppCompatActivity {
             user        = intent.getParcelableExtra(Config.USER_INFO);
         }
 
-
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment
-    {
+    public static class MyPreferenceFragment extends PreferenceFragment {
+        protected DatabaseReference userRef;
         @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
+        public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            userRef = database.getReference(Config.DB_USERS);
             PreferenceScreen root = getPreferenceManager().createPreferenceScreen(getActivity());
             SharedPreferences.Editor editor = root.getPreferenceManager().getSharedPreferences().edit();
             editor.putBoolean(getString(R.string.e_v), user.isAllowDisplayingEmail());
@@ -87,8 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
                     boolean switched = ((SwitchPreference) preference)
                             .isChecked();
                     user.setAllowDisplayingEmail(!switched);
-
-                    Config.toastLong(getActivity(), "email: " + user.isAllowDisplayingEmail());
+                    userRef.child(user.getProfileUid()).setValue(user);
                     return true;
 
                 }
@@ -105,8 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
                     boolean switched = ((SwitchPreference) preference)
                             .isChecked();
                     user.setAllowDisplayingMobileNumber(!switched);
-
-                    Config.toastLong(getActivity(), "mobile: " + user.isAllowDisplayingMobileNumber());
+                    userRef.child(user.getProfileUid()).setValue(user);
                     return true;
 
                 }
