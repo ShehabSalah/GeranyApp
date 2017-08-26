@@ -120,8 +120,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
             postContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //ToDo: make intent to post details
-
                     Intent intent = new Intent(context, CollaboratorActivity.class);
                     intent.putExtra(Config.POST_ID_EXTRA,
                             postController.getPosts().get(getAdapterPosition()).getDate());

@@ -47,7 +47,6 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
     protected User user;
     private boolean isGoogle = false;
     protected MyPlacesController myPlacesController;
-    protected CategoriesController categoriesController;
     private final int LOCATION_PERMISSION = 9999;
 
     /**

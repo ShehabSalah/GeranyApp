@@ -26,7 +26,6 @@ import com.shehabsalah.geranyapp.util.Config;
 import com.shehabsalah.locationlib.GET_Connector;
 import com.shehabsalah.locationlib.GetInfoAsyncTask;
 import com.shehabsalah.locationlib.UriBuilder;
-import com.twitter.sdk.android.core.models.Place;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,16 +41,14 @@ import java.util.Date;
 
 public abstract class MyPlacesController implements LocationListener{
     private ArrayList<MyPlaces> myPlaces;
-    private FirebaseDatabase database;
     private DatabaseReference placeRef;
     private User userInfo;
     private Context activity;
     private static final long MIN_TIME_BW_UPDATE = 1000 * 60 * 10;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATE = 10;
-    private Location location;
     private static double lat;
     private static double lng;
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
     private String currentLocation = null;
     private boolean isDefault = false;
 
@@ -61,7 +58,7 @@ public abstract class MyPlacesController implements LocationListener{
      * */
     public MyPlacesController(User userInfo, Context activity) {
         myPlaces = new ArrayList<>();
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         placeRef = database.getReference(Config.DB_PLACES);
         placeRef.keepSynced(true);
         this.userInfo = userInfo;
@@ -70,7 +67,6 @@ public abstract class MyPlacesController implements LocationListener{
 
     /**
      * This method communicate with Google Map API and the Gerany server to extract the user full address
-     * @return string contain the full address of the user
      * */
     public void getTheCurrentLocation() {
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
@@ -84,7 +80,7 @@ public abstract class MyPlacesController implements LocationListener{
                             PackageManager.PERMISSION_GRANTED) {
                 //Dummy code
             }
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
                 lat = location.getLatitude();
                 lng = location.getLongitude();
@@ -163,14 +159,6 @@ public abstract class MyPlacesController implements LocationListener{
      * */
     public ArrayList<MyPlaces> getMyPlaces() {
         return myPlaces;
-    }
-
-    /**
-     * This method provide access to the places list size
-     * @return int that contain the places size
-     * */
-    public int getPlacesSize(){
-        return myPlaces.size();
     }
 
     /**
@@ -293,10 +281,6 @@ public abstract class MyPlacesController implements LocationListener{
             };
             getInfoAsyncTask.execute(getItemAPI);
         }
-    }
-
-    public String getCurrentLocation() {
-        return currentLocation;
     }
 
     public abstract void myPlacesLoadFinish(String location, boolean state);

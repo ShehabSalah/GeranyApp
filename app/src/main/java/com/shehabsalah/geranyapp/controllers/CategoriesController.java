@@ -1,7 +1,14 @@
 package com.shehabsalah.geranyapp.controllers;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.shehabsalah.geranyapp.model.Category;
 import com.shehabsalah.geranyapp.model.MyPlaces;
+import com.shehabsalah.geranyapp.util.Config;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -14,12 +21,15 @@ import java.util.Locale;
 
 public class CategoriesController {
     private ArrayList<Category> categories;
+    private DatabaseReference categoryRef;
 
     /**
      * Constructor to initiate categories list
      * */
     public CategoriesController() {
         this.categories = new ArrayList<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        categoryRef = database.getReference(Config.DB_CATEGORIES);
     }
 
 
@@ -28,36 +38,21 @@ public class CategoriesController {
      * ArrayList<Category>
      * */
     public void fillCategories(){
-        //ToDo: replace content with fetching places from the server (IMPLEMENTATION: #1)
-        categories = new ArrayList<>();
-        categories.add(new Category(
-                "0001",
-                "Sharing Idea"
-        ));
-        categories.add(new Category(
-                "0002",
-                "News"
-        ));
-        categories.add(new Category(
-                "0003",
-                "Sport Event"
-        ));
-        categories.add(new Category(
-                "0004",
-                "Cleaning"
-        ));
-        categories.add(new Category(
-                "0005",
-                "Decoration"
-        ));
-        categories.add(new Category(
-                "0006",
-                "Safety"
-        ));
-        categories.add(new Category(
-                "0007",
-                "Solving Problem"
-        ));
+        Query query = categoryRef.orderByChild(Config.CATEGORY);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                categories = new ArrayList<>();
+                for (DataSnapshot placeSnap: snapshot.getChildren()) {
+                    Category category = placeSnap.getValue(Category.class);
+                    categories.add(0,category);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 

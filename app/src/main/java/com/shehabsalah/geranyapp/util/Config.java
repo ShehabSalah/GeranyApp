@@ -43,6 +43,7 @@ public class Config {
     public static final String USER_ID                      = "userId";
     public static final String USER_ID2                     = "user_id";
     public static final String LOCATION                     = "location";
+    public static final String CATEGORY                     = "categoryId";
 
     public static final String DEFAULT_PLACE_NAME           = "Default Place";
 

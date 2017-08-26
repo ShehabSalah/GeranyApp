@@ -59,7 +59,6 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
 
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setTitle("");
-       // ToDo: i removed this line toolbar.setTitle(""); must see later if it effect on the profile view or not
         setSupportActionBar(toolbar);
         startAlphaAnimation(usernameProfileToolbar, 0, View.INVISIBLE);
 

@@ -122,6 +122,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         //Initialize the FirebaseAuth instance and the AuthStateListener method so you can track
         //whenever the user signs in or out.
         mAuth = FirebaseAuth.getInstance();
+        loadData();
         if(isNotLoggedIn()){
             signIn();
         }
@@ -203,7 +204,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             signalOffMessage.setVisibility(View.GONE);
             homeFrame.setVisibility(View.VISIBLE);
             navigation.setVisibility(View.VISIBLE);
-            loadData();
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
             navigation.setSelectedItemId(R.id.navigation_home);
         }else{
