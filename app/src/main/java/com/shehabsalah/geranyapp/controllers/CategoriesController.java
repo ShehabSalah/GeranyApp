@@ -87,7 +87,6 @@ public class CategoriesController {
      * @return Category object which contain the category information that just added.
      * */
     public Category addNewCategory(String categoryName){
-        //ToDo: add category to the database and when the id is returned add category to the list
         Category category = new Category("Category_id","CategoryName");
         categories.add(category);
         return null;

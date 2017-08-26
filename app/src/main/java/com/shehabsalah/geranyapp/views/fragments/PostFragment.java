@@ -71,7 +71,10 @@ public class PostFragment extends Fragment {
             public void onLoadFinish() {
                 if (postController.getPosts().isEmpty()){
                     noPosts.setVisibility(View.VISIBLE);
-                    noPosts.setText(getString(R.string.home_posts_area));
+                    if (postIndicator == Config.HOME_POSTS)
+                        noPosts.setText(getString(R.string.home_posts_area));
+                    else noPosts.setText(getString(R.string.profile_posts_area));
+
                 }else{
                     noPosts.setVisibility(View.GONE);
                 }
@@ -97,7 +100,9 @@ public class PostFragment extends Fragment {
             public void onLoadFinish() {
                 if (postController.getPosts().isEmpty()){
                     noPosts.setVisibility(View.VISIBLE);
-                    noPosts.setText(getString(R.string.home_posts_area));
+                    if (postIndicator == Config.HOME_POSTS)
+                        noPosts.setText(getString(R.string.home_posts_area));
+                    else noPosts.setText(getString(R.string.profile_posts_area));
                 }else{
                     noPosts.setVisibility(View.GONE);
                 }

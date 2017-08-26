@@ -447,7 +447,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     }
 
     private void reportMenu(final Post post, View v){
-        Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.MyPopupMenu);
+        Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
         //Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(wrapper, v);
         //Inflating the Popup using xml file

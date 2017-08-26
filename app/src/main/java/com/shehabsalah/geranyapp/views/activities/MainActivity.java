@@ -261,7 +261,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             signalOffMessage.setVisibility(View.GONE);
             homeFrame.setVisibility(View.GONE);
             navigation.setVisibility(View.GONE);
-
         }
     }
 

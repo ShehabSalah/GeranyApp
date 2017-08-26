@@ -84,11 +84,12 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //Get the user basic information
-                    getUserDataFromDB(getUserInfo());
+
                     UserInfo userInfo = user.getProviderData().get(1);
                     if (userInfo.getProviderId().contains("book")){
                         isGoogle = false;
                     }
+                    getUserDataFromDB(getUserInfo());
 
 
                     Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -182,6 +183,8 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
         String userImage = null;
         if (isGoogle){
             userImage = profile.getPhotoUrl().toString().replace("/s96-c/","/s300-c/");
+        }else{
+            userImage = profile.getPhotoUrl().toString();
         }
 
         user = new User(profile.getDisplayName(), profile.getProviderId(),profile.getEmail(),
@@ -253,7 +256,6 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
                 @Override
                 public void myPlacesLoadFinish(String location, boolean state) {
                     if (state){
-                        //ToDo: load the categories here and move the callback to the categories
                         ((Callback) ApplicationMain.this).onLoadFinish(true);
                     }
                 }
@@ -270,7 +272,6 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
                 @Override
                 public void myPlacesLoadFinish(String location, boolean state) {
                     if (state){
-                        //ToDo: load the categories here and move the callback to the categories
                         ((Callback) ApplicationMain.this).onLoadFinish(true);
                     }
                 }
