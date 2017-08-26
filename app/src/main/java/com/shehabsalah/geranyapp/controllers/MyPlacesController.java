@@ -277,11 +277,11 @@ public abstract class MyPlacesController implements LocationListener{
                     if (jsonObject != null){
                         try {
                             currentLocation = jsonObject.getString("address");
-                            myPlacesLoadFinish(currentLocation, true);
                             if (isDefault){
                                 addDefaultLocation();
                                 isDefault = false;
                             }
+                            myPlacesLoadFinish(currentLocation, true);
                         }catch(JSONException e){
                             e.printStackTrace();
                         }

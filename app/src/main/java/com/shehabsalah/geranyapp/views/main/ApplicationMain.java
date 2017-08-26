@@ -168,12 +168,11 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
             isNumberExist = false;
 
         Intent intent = new Intent(this, AddUserInfoActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(Config.USER_HAS_EMAIL, isEmailExist);
         intent.putExtra(Config.USER_HAS_NUMBER, isNumberExist);
         intent.putExtra(Config.USER_INFO, user);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -218,13 +217,14 @@ public class ApplicationMain extends AppCompatActivity implements ActivityCompat
                                 user = userTemp;
                                 if (userTemp.getProfileEmail() == null || userTemp.getPhoneNumber() == null){
                                     userInfoNeeded();
+                                }else{
+                                    requestLocationPermission();
                                 }
                             }
                         }
                     }else{
                         addUserToDB(profile);
                     }
-                    requestLocationPermission();
                 }
 
                 @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_add_user_info);
         if (getSupportActionBar()!=null){
             getSupportActionBar().hide();
@@ -50,9 +52,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
             isEmailExist = getIntent().getBooleanExtra(Config.USER_HAS_EMAIL, false);
             isNumberExist = getIntent().getBooleanExtra(Config.USER_HAS_NUMBER, false);
             user = getIntent().getParcelableExtra(Config.USER_INFO);
-
-            if (isEmailExist && isNumberExist)
-                finish();
 
             database = FirebaseDatabase.getInstance();
             userRef = database.getReference(Config.DB_USERS);
