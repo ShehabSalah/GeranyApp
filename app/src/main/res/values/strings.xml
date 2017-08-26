@@ -187,10 +187,6 @@
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
         "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
         "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
     </string>
     <string name="post_interactions" formatted="false">%d dislikes - %d volunteers - %d donations</string>
     <string name="post_interaction_sample">35 dislikes - 3 volunteers - 45678 donations</string>

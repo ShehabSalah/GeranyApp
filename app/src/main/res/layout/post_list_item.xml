@@ -149,10 +149,13 @@
                     android:paddingEnd="@dimen/extra_small_margin"
                     android:paddingTop="@dimen/small_margin"
                     android:paddingBottom="@dimen/small_margin"
+                    android:gravity="center"
                     android:id="@+id/dislike_container">
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         >
                         <ImageView
                             android:layout_width="@dimen/interaction_icon_size"
@@ -167,7 +170,10 @@
                             android:layout_height="wrap_content"
                             android:text="@string/dislike"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/small_margin"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/extra_small_margin"
+                            android:paddingEnd="@dimen/extra_small_margin"
+                            android:textSize="@dimen/text_extra_small_size"
                             android:layout_toEndOf="@+id/hand_logo" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -184,25 +190,30 @@
                     android:paddingTop="@dimen/small_margin"
                     android:paddingBottom="@dimen/small_margin"
                     android:orientation="horizontal"
+                    android:gravity="center"
                     android:id="@+id/volunteer_container">
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center">
                         <ImageView
                             android:layout_width="@dimen/interaction_icon_size"
                             android:layout_height="@dimen/interaction_icon_size"
                             android:src="@drawable/ic_volunteer"
-                            android:layout_marginStart="@dimen/small_margin"
                             android:layout_marginEnd="@dimen/no_dp"
-                            android:id="@+id/volunteer_logo" />
+                            android:id="@+id/volunteer_logo"/>
                         <TextView
                             android:id="@+id/post_volunteer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/volunteer"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/small_margin"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/extra_small_margin"
+                            android:paddingEnd="@dimen/extra_small_margin"
                             android:layout_marginEnd="@dimen/no_dp"
+                            android:textSize="@dimen/text_extra_small_size"
                             android:layout_toEndOf="@+id/volunteer_logo" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -215,19 +226,21 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingStart="@dimen/extra_small_margin"
-                    android:paddingRight="@dimen/extra_small_margin"
+                    android:paddingEnd="@dimen/extra_small_margin"
                     android:paddingTop="@dimen/small_margin"
                     android:paddingBottom="@dimen/small_margin"
                     android:orientation="horizontal"
+                    android:gravity="center"
                     android:id="@+id/donation_container">
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center">
                         <ImageView
                             android:layout_width="@dimen/interaction_icon_size"
                             android:layout_height="@dimen/interaction_icon_size"
                             android:src="@drawable/ic_money"
-                            android:layout_marginStart="@dimen/small_margin"
                             android:layout_marginEnd="@dimen/no_dp"
                             android:id="@+id/collaboration_logo" />
                         <TextView
@@ -236,8 +249,10 @@
                             android:layout_height="wrap_content"
                             android:text="@string/donation"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/extra_small_margin"
-                            android:layout_marginEnd="@dimen/no_dp"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/extra_small_margin"
+                            android:paddingEnd="@dimen/extra_small_margin"
+                            android:textSize="@dimen/text_extra_small_size"
                             android:layout_toEndOf="@+id/collaboration_logo" />
                     </RelativeLayout>
                 </LinearLayout>
