@@ -1,15 +1,20 @@
 package com.shehabsalah.geranyapp.views.adapters;
 
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shehabsalah.geranyapp.R;
 import com.shehabsalah.geranyapp.model.Collaborator;
+import com.shehabsalah.geranyapp.util.Config;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CollaboratorAdapter extends RecyclerView.Adapter<CollaboratorAdapter.MyViewHolder>{
     private Context context;
     private ArrayList<Collaborator> collaborators;
+    private AlertDialog alertDialog;
 
     public CollaboratorAdapter(Context context, ArrayList<Collaborator> collaborators) {
         this.context = context;
@@ -43,7 +49,7 @@ public class CollaboratorAdapter extends RecyclerView.Adapter<CollaboratorAdapte
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //ToDo: open user profile dialog
+                    showProfileDialog(getAdapterPosition());
                 }
             });
 
@@ -70,5 +76,14 @@ public class CollaboratorAdapter extends RecyclerView.Adapter<CollaboratorAdapte
     @Override
     public int getItemCount() {
         return collaborators==null?0:collaborators.size();
+    }
+
+    private void showProfileDialog(final int position){
+        View v = LayoutInflater.from(context).inflate(R.layout.profile_dialog,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setView(v);
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 }

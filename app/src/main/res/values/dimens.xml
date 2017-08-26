@@ -46,4 +46,10 @@
     <dimen name="post_image_max_height">200dp</dimen>
     <dimen name="interaction_icon_size">26dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+
+    <!-- Profile Dialog -->
+    <dimen name="profile_dialog_header_size">120dp</dimen>
+    <dimen name="profile_dialog_image_size">90dp</dimen>
+    <dimen name="profile_dialog_pic_margin">-45dp</dimen>
 </resources>
