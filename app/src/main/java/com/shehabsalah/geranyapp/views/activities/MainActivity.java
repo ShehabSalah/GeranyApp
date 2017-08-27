@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -12,6 +13,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -35,6 +37,7 @@ import com.shehabsalah.geranyapp.views.main.ApplicationMain;
 import com.shehabsalah.geranyapp.util.Config;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +61,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     PostFragment postFragment;
     MyPlacesListFragment myPlacesListFragment;
     CategoriesController categoriesController;
+    private boolean isHomeActive = false;
 
 
 
@@ -68,12 +72,11 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    setTitle(getString(R.string.title_home));
-                    postFragment = new PostFragment();
-                    postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
-                            .commit();
+                    if (isHomeActive){
+                        setHomePosts();
+                    }else{
+                        restoreHomePosts();
+                    }
                     return true;
                 case R.id.navigation_places:
                     setTitle(getString(R.string.title_places));
@@ -82,6 +85,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, myPlacesListFragment, Config.MY_NEW_PLACES_LIST)
                             .commit();
+                    isHomeActive = false;
                     return true;
                 case R.id.navigation_post:
                     Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
@@ -98,6 +102,7 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.home_container, addNewLocationFragment, Config.ADD_NEW_PLACE_FRAGMENT)
                             .commit();
+                    isHomeActive = false;
                     setTitle(getString(R.string.title_add_place));
                     return true;
                 case R.id.navigation_profile:
@@ -117,7 +122,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         mAuth = FirebaseAuth.getInstance();
         //Initialize the FirebaseAuth instance and the AuthStateListener method so you can track
         //whenever the user signs in or out.
@@ -133,22 +137,22 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             Log.i(LOG_TAG, user.getProfileEmail());
             Log.i(LOG_TAG, user.getProfileUid());
         }
-
-        disableShiftMode(navigation);
-        initializeViews();
-
-        signalOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reloadUser();
-            }
-        });
-        signalOffMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reloadUser();
-            }
-        });
+        if (savedInstanceState == null){
+            disableShiftMode(navigation);
+            initializeViews();
+            signalOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reloadUser();
+                }
+            });
+            signalOffMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reloadUser();
+                }
+            });
+        }
     }
 
     @Override
@@ -198,14 +202,16 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
     @Override
     public void onLoadFinish(boolean state) {
         if (state){
-            firstTime = false;
             progressBar.setVisibility(View.GONE);
             signalOff.setVisibility(View.GONE);
             signalOffMessage.setVisibility(View.GONE);
             homeFrame.setVisibility(View.VISIBLE);
             navigation.setVisibility(View.VISIBLE);
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            navigation.setSelectedItemId(R.id.navigation_home);
+            if(firstTime)
+                setHomePosts();
+            firstTime = false;
+
         }else{
             noInternetLayout();
         }
@@ -289,4 +295,21 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
         initializeViews();
     }
 
+    private void setHomePosts(){
+        setTitle(getString(R.string.title_home));
+        postFragment = new PostFragment();
+        postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                .commit();
+        isHomeActive = true;
+    }
+
+    private void restoreHomePosts(){
+        setTitle(getString(R.string.title_home));
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                .commit();
+        isHomeActive = true;
+    }
 }
