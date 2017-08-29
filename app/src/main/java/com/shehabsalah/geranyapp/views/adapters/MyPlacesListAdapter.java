@@ -36,7 +36,7 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
     private Context context;
     private int activePosition = 0;
     private AlertDialog alertDialog;
-    private final String PLACE_SECTION_NAME = "lace";
+    private final String PLACE_SECTION_NAME = "Place";
 
     public MyPlacesListAdapter(MyPlacesController myPlacesController, Context context) {
         this.myPlacesController = myPlacesController;
@@ -64,7 +64,9 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                     clearSelection();
                     toggleSelection(clickedPosition);
                     myPlacesController.getMyPlaces().get(activePosition).setActive(false);
+                    myPlacesController.addPlace(myPlacesController.getMyPlaces().get(activePosition));
                     myPlacesController.getMyPlaces().get(clickedPosition).setActive(true);
+                    myPlacesController.addPlace(myPlacesController.getMyPlaces().get(clickedPosition));
                     PreferenceManager.getDefaultSharedPreferences(context).edit().
                             putString(Config.ACTIVE_PLACE,
                                     myPlacesController.getMyPlaces().get(clickedPosition).getPlaceAddress()
@@ -79,7 +81,6 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                     //add selected message
                 }
             });
-
             delete_active.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -225,7 +226,12 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
         final TextView textLength = (TextView)v.findViewById(R.id.edit_text_length);
 
         String placeNickname = myPlacesController.getMyPlaces().get(position).getPlaceNickname();
-        currentLocationTextView.setText(placeNickname.trim().isEmpty()?myPlacesController.getMyPlaces().get(position).getPlaceAddress():placeNickname);
+        if (placeNickname != null && !placeNickname.trim().isEmpty()){
+            currentLocationTextView.setText(placeNickname);
+        }else{
+            currentLocationTextView.setText(myPlacesController.getMyPlaces().get(position).getPlaceAddress());
+        }
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

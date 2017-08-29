@@ -6,5 +6,5 @@
     android:minWidth="180dp"
     android:previewImage="@mipmap/gerany_logo_png"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"/>

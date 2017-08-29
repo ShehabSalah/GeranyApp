@@ -169,18 +169,22 @@ public class AddNewLocationFragment extends Fragment {
      * */
     private void beenHere(){
        if (addNewLocationIcon!=null){
-           addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_beenhere));
-           addNewLocationIcon.setVisibility(View.VISIBLE);
-           addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   //Do nothing
-               }
-           });
-           addLocationText.setVisibility(View.VISIBLE);
-           addLocationText.setText(R.string.current_place_exist);
-           addToPlacesButton.setVisibility(View.GONE);
-           progressBar.setVisibility(View.GONE);
+           try{
+               addNewLocationIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_beenhere));
+               addNewLocationIcon.setVisibility(View.VISIBLE);
+               addNewLocationIcon.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       //Do nothing
+                   }
+               });
+               addLocationText.setVisibility(View.VISIBLE);
+               addLocationText.setText(R.string.current_place_exist);
+               addToPlacesButton.setVisibility(View.GONE);
+               progressBar.setVisibility(View.GONE);
+           }catch (NullPointerException e){
+               e.printStackTrace();
+           }
        }
     }
 

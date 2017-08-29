@@ -55,7 +55,6 @@ public class GetWidgetData {
     public ArrayList<RemoteViews> getRemoteViews(final Context context){
 
         ArrayList<Post> posts = getArrayList(context);
-        Log.e("posts size: ", posts.size()+"");
         ArrayList<RemoteViews> remoteViewsArrayList = new ArrayList<>();
 
         if (posts != null){
@@ -80,8 +79,7 @@ public class GetWidgetData {
                 remoteViews.addView(R.id.parent_layout, listView);
                 remoteViewsArrayList.add(remoteViews);
             }
-            return remoteViewsArrayList;
         }
-        return null;
+        return remoteViewsArrayList;
     }
 }

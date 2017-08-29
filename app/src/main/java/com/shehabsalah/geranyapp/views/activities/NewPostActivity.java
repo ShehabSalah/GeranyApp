@@ -24,11 +24,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shehabsalah.geranyapp.R;
+import com.shehabsalah.geranyapp.controllers.CategoriesController;
+import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.controllers.PostController;
 import com.shehabsalah.geranyapp.model.Category;
 import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
+import com.shehabsalah.geranyapp.views.adapters.PostAdapter;
 import com.shehabsalah.locationlib.UploadImageThread;
 import com.squareup.picasso.Picasso;
 
@@ -65,9 +68,10 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
 
     PostController postController;
     AlertDialog alertMenuDialog;
-    ArrayList<Category> categories;
     MyPlaces myPlaces;
     User user;
+
+    private int whichMethod = -1;
 
     private final int BROWSE_GALLERY_INTENT         = 0;
     private final int REQUEST_WRITE_PERMISSION      = 1;
@@ -76,7 +80,9 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     private Uri imageUri = null;
     private String postTextStr;
     String categoryNameStr;
+    ArrayList<Category> categories;
     UploadImageThread uploadImageThread;
+    MyPlacesController placesController;
 
 
     @Override
@@ -90,9 +96,8 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
 
 
         Intent intent = getIntent();
-        if (intent.hasExtra(Config.CATEGORIES_EXTRA) && intent.hasExtra(Config.MY_PLACES_EXTRA)){
+        if (intent.hasExtra(Config.USER_INFO) && intent.hasExtra(Config.CATEGORIES_EXTRA)){
             categories  = intent.getParcelableArrayListExtra(Config.CATEGORIES_EXTRA);
-            myPlaces    = intent.getParcelableExtra(Config.MY_PLACES_EXTRA);
             user        = intent.getParcelableExtra(Config.USER_INFO);
 
         }
@@ -128,11 +133,19 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
                 }
             }
         });
-        bindViews();
+        placesController = new MyPlacesController(user, getApplicationContext()) {
+            @Override
+            public void myPlacesLoadFinish(String location, boolean state) {
+                myPlaces = placesController.getActivePlace();
+                bindViews();
+
+            }
+        };
+        placesController.fillPlaces();
     }
 
     private void bindViews() {
-        if (categories != null && myPlaces != null) {
+        if ( myPlaces != null ) {
             String placeNickname = myPlaces.getPlaceNickname();
             postNote.setText(String.format(getString(R.string.post_note),
                     placeNickname.trim().isEmpty() ? myPlaces.getPlaceAddress() : placeNickname));
@@ -166,10 +179,12 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
                     //LaunchCamera
+                    whichMethod = 0;
                     requestCameraPermission();
                 } else {
                     //Browse
-                    requestWritePermission();
+                    whichMethod = 1;
+                    requestWritePermission(false);
                 }
 
             }
@@ -191,6 +206,14 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, BROWSE_GALLERY_INTENT);
+    }
+
+    private void whichGallery(){
+        if (whichMethod == 0){
+            takePicture();
+        }else{
+            browseImage();
+        }
     }
 
 
@@ -216,16 +239,18 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            browseImage();
+            whichGallery();
         }else if (requestCode == OPEN_CAMERA_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            takePicture();
+            requestWritePermission(true);
         }
     }
 
-    private void requestWritePermission() {
+    private void requestWritePermission(boolean isCamera) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-        } else {
+        } else if (isCamera){
+            takePicture();
+        }else{
             browseImage();
         }
     }
@@ -234,7 +259,7 @@ public class NewPostActivity extends AppCompatActivity implements ActivityCompat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, OPEN_CAMERA_PERMISSION);
         } else {
-            takePicture();
+            requestWritePermission(true);
         }
     }
 

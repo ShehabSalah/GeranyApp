@@ -89,7 +89,6 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     return true;
                 case R.id.navigation_post:
                     Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
-                    intent.putExtra(Config.MY_PLACES_EXTRA, myPlacesController.getActivePlace());
                     intent.putExtra(Config.USER_INFO, user);
                     intent.putParcelableArrayListExtra(Config.CATEGORIES_EXTRA, categoriesController.getCategories());
                     startActivity(intent);
@@ -137,8 +136,8 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             Log.i(LOG_TAG, user.getProfileEmail());
             Log.i(LOG_TAG, user.getProfileUid());
         }
+        disableShiftMode(navigation);
         if (savedInstanceState == null){
-            disableShiftMode(navigation);
             initializeViews();
             signalOff.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,6 +151,9 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
                     reloadUser();
                 }
             });
+        }
+        if (categoriesController == null || categoriesController.getCategoriesSize() == 0){
+            loadData();
         }
     }
 
@@ -208,8 +210,10 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
             homeFrame.setVisibility(View.VISIBLE);
             navigation.setVisibility(View.VISIBLE);
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            if(firstTime)
+            if(firstTime){
+                loadData();
                 setHomePosts();
+            }
             firstTime = false;
 
         }else{
@@ -297,12 +301,29 @@ public class MainActivity extends ApplicationMain implements AddNewLocationDialo
 
     private void setHomePosts(){
         setTitle(getString(R.string.title_home));
-        postFragment = new PostFragment();
-        postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
-                .commit();
-        isHomeActive = true;
+        if (myPlacesController.getActivePlace()!=null&&myPlacesController.getActivePlace().getPlaceAddress() != null){
+            postFragment = new PostFragment();
+            postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                    .commit();
+            isHomeActive = true;
+        }else{
+
+            myPlacesController = new MyPlacesController(user,getApplicationContext()){
+                @Override
+                public void myPlacesLoadFinish(String location, boolean state) {
+                    postFragment = new PostFragment();
+                    postFragment.setExtra(user, myPlacesController.getActivePlace().getPlaceAddress(), Config.HOME_POSTS);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.home_container, postFragment, Config.POST_FRAGMENT)
+                            .commit();
+                    isHomeActive = true;
+                }
+            };
+            myPlacesController.fillPlaces();
+        }
+
     }
 
     private void restoreHomePosts(){

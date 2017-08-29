@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shehabsalah.geranyapp.R;
+import com.shehabsalah.geranyapp.controllers.MyPlacesController;
 import com.shehabsalah.geranyapp.controllers.PostController;
 import com.shehabsalah.geranyapp.model.User;
 import com.shehabsalah.geranyapp.util.Config;
@@ -39,6 +40,7 @@ public class PostFragment extends Fragment {
     User userProfile;
     int postIndicator;
     PostController postController;
+    MyPlacesController placesController;
     String activePlace;
 
     @Nullable
@@ -65,27 +67,8 @@ public class PostFragment extends Fragment {
                 refreshContent();
             }
         });
-        swipeToRefresh.setRefreshing(true);
-        postController = new PostController(getActivity()) {
-            @Override
-            public void onLoadFinish() {
-                if (postController.getPosts().isEmpty()){
-                    noPosts.setVisibility(View.VISIBLE);
-                    if (postIndicator == Config.HOME_POSTS)
-                        noPosts.setText(getString(R.string.home_posts_area));
-                    else noPosts.setText(getString(R.string.profile_posts_area));
+        refreshContent();
 
-                }else{
-                    noPosts.setVisibility(View.GONE);
-                }
-                postAdapter = new PostAdapter(getActivity(), postController, userProfile);
-                recyclerView.setAdapter(postAdapter);
-                swipeToRefresh.setRefreshing(false);
-            }
-        };
-        if (postIndicator == Config.HOME_POSTS)
-            postController.getHomePostsList(activePlace);
-        else postController.getProfilePostsList(userProfile);
 
         return mainView;
     }
@@ -95,25 +78,32 @@ public class PostFragment extends Fragment {
      * */
     private void refreshContent(){
         swipeToRefresh.setRefreshing(true);
-        postController = new PostController(getActivity()) {
+        placesController = new MyPlacesController(userProfile, getActivity()) {
             @Override
-            public void onLoadFinish() {
-                if (postController.getPosts().isEmpty()){
-                    noPosts.setVisibility(View.VISIBLE);
-                    if (postIndicator == Config.HOME_POSTS)
-                        noPosts.setText(getString(R.string.home_posts_area));
-                    else noPosts.setText(getString(R.string.profile_posts_area));
-                }else{
-                    noPosts.setVisibility(View.GONE);
-                }
-                postAdapter = new PostAdapter(getActivity(), postController, userProfile);
-                recyclerView.setAdapter(postAdapter);
-                swipeToRefresh.setRefreshing(false);
+            public void myPlacesLoadFinish(String location, boolean state) {
+                postController = new PostController(getActivity()) {
+                    @Override
+                    public void onLoadFinish() {
+                        if (postController.getPosts().isEmpty()){
+                            noPosts.setVisibility(View.VISIBLE);
+                            if (postIndicator == Config.HOME_POSTS)
+                                noPosts.setText(getString(R.string.home_posts_area));
+                            else noPosts.setText(getString(R.string.profile_posts_area));
+
+                        }else{
+                            noPosts.setVisibility(View.GONE);
+                        }
+                        postAdapter = new PostAdapter(getActivity(), postController, userProfile);
+                        recyclerView.setAdapter(postAdapter);
+                        swipeToRefresh.setRefreshing(false);
+                    }
+                };
+                if (postIndicator == Config.HOME_POSTS)
+                    postController.getHomePostsList(placesController.getActivePlace().getPlaceAddress());
+                else postController.getProfilePostsList(userProfile);
             }
         };
-        if (postIndicator == Config.HOME_POSTS)
-            postController.getHomePostsList(activePlace);
-        else postController.getProfilePostsList(userProfile);
+        placesController.fillPlaces();
     }
 
     public void setExtra(User userProfile, String activePlace, int postIndicator){

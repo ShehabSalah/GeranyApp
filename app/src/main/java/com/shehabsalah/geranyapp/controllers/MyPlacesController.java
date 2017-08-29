@@ -293,4 +293,8 @@ public abstract class MyPlacesController implements LocationListener{
     private void addDefaultLocation(){
         addNewPlace(currentLocation, Config.DEFAULT_PLACE_NAME, true);
     }
+
+    public void addPlace(MyPlaces place){
+        placeRef.child(place.getPlaceId()).setValue(place);
+    }
 }
