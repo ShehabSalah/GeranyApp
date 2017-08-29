@@ -50,8 +50,6 @@
     <string name="declared_field">mShiftingMode</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="large_text">
-        "Material is the metaphor.\n\n"
-
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
         "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
         "technologically advanced and open to imagination and magic.\n"
@@ -206,5 +204,12 @@
     <string name="no_volunteers">There is no volunteers.</string>
     <string name="no_donation">There is no donations.</string>
     <string name="no_feedback">There is no Feedback.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_no_data">There is no posts.</string>
+
+
+
+    <string name="content_authority">com.shehabsalah.geranyapp</string>
 
 </resources>

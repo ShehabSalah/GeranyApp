@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.text.format.DateFormat;
 import android.widget.Toast;
@@ -107,6 +108,10 @@ public abstract class MyPlacesController implements LocationListener{
         placeRef.child(currentDate).setValue(myPlace);
         if (myPlaces!=null)
             myPlaces.add(myPlace);
+
+        if (isActive){
+            PreferenceManager.getDefaultSharedPreferences(activity).edit().putString(Config.ACTIVE_PLACE, placeAddress).apply();
+        }
 
         return myPlace;
     }

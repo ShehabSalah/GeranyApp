@@ -2,6 +2,7 @@ package com.shehabsalah.geranyapp.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.widget.Toast;
 
 /**
@@ -25,6 +26,7 @@ public class Config {
     public static final String USER_HAS_NUMBER              = "user_has_number";
     public static final String POST_ID_EXTRA                = "post_id";
     public static final String FAKE_IMAGE                   = "http://www.platformhouse.com/fack_image.jpg";
+    public static final String ACTIVE_PLACE                 = "active_place";
 
     //Database roots
     public static final String DB_POSTS                     = "posts";
@@ -75,6 +77,10 @@ public class Config {
     public static final String FEEDBACK_NAME                = "Feedback";
     public static final String VOLUNTEERS_NAME              = "Volunteers";
     public static final String DONATION_NAME                = "Donation";
+
+    //Providers
+    public static final String AUTHORITY            = "com.shehabsalah.geranyapp";
+    public static final Uri CONTENT_URI_BASE        = Uri.parse("content://" + AUTHORITY);
 
     /**
      * This method used to display short toasts.

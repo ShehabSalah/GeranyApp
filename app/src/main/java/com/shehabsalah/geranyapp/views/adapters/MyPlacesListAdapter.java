@@ -3,6 +3,7 @@ package com.shehabsalah.geranyapp.views.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 
 import android.support.v7.app.AlertDialog;
@@ -64,6 +65,10 @@ public class MyPlacesListAdapter extends SelectableAdapter<MyPlacesListAdapter.M
                     toggleSelection(clickedPosition);
                     myPlacesController.getMyPlaces().get(activePosition).setActive(false);
                     myPlacesController.getMyPlaces().get(clickedPosition).setActive(true);
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().
+                            putString(Config.ACTIVE_PLACE,
+                                    myPlacesController.getMyPlaces().get(clickedPosition).getPlaceAddress()
+                            ).apply();
                     activePosition = clickedPosition;
                     String placeName = myPlacesController.getMyPlaces().get(activePosition).getPlaceNickname();
                     if (placeName == null || placeName.isEmpty())

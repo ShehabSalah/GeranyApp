@@ -36,7 +36,6 @@
             android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NewPostStyle" />
-
         <activity
             android:name=".views.activities.ProfileActivity"
             android:label="@string/title_activity_profile"
@@ -44,24 +43,38 @@
             android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".views.activities.SettingsActivity"
             android:parentActivityName=".views.activities.ProfileActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".views.activities.AddUserInfoActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".views.activities.CollaboratorActivity"
             android:label="@string/title_activity_collaborator"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".views.activities.MainActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".views.activities.MainActivity"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <receiver android:name=".AppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+        <service
+            android:name=".AppWidgetIntent"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <provider
+            android:name=".localDatabase.PostProvider"
+            android:authorities="@string/content_authority"
+            android:exported="true"
+            android:syncable="true" />
     </application>
 
 </manifest>

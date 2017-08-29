@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.shehabsalah.geranyapp.localDatabase.PostModel;
 import com.shehabsalah.geranyapp.model.MyPlaces;
 import com.shehabsalah.geranyapp.model.Post;
 import com.shehabsalah.geranyapp.model.User;
@@ -106,6 +107,8 @@ public abstract class PostController {
                     Post post = postSnap.getValue(Post.class);
                     posts.add(0,post);
                 }
+                PostModel.delete(context);
+                PostModel.insert(context, posts);
                 onLoadFinish();
             }
 
