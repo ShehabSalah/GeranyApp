@@ -32,7 +32,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="@dimen/shape_edge_padding"
         app:layout_constraintBottom_toTopOf="@+id/add_location_text"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/location_icon_description"/>
 
     <TextView
         android:id="@+id/add_location_text"

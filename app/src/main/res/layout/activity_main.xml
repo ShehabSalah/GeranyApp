@@ -59,7 +59,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/navigation" />
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        android:contentDescription="@string/no_signal_description" />
 
     <TextView
         android:id="@+id/signal_off_message"

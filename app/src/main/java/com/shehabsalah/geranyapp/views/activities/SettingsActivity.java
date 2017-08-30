@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Settings");
+        setTitle(getResources().getString(R.string.settings_title));
 
         Intent intent = getIntent();
         if (intent.hasExtra(Config.USER_INFO)){

@@ -45,6 +45,7 @@
         app:srcCompat="@drawable/ic_edit_gray"
         android:tint="@color/default_icon_color"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/rename_place_description"
         />
     <ImageView
         android:id="@+id/delete_active"
@@ -53,6 +54,7 @@
         android:padding="@dimen/shape_edge_extra_small_padding"
         android:layout_marginEnd="@dimen/shape_edge_extra_small_padding"
         app:srcCompat="@drawable/ic_delete"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/delete_active"/>
 
 </LinearLayout>

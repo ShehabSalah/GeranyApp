@@ -10,10 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:cardElevation="@dimen/card_elevation"
     app:cardCornerRadius="@dimen/card_corner_radius">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
         <LinearLayout
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,18 +26,17 @@
                     android:src="@mipmap/profile"
                     app:civ_border_color="@color/appBackground"
                     app:civ_border_width="@dimen/post_border_size"
-                    android:scaleType="centerCrop"/>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/no_dp"
-                    android:paddingTop="5dp">
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/profile_pic_description"/>
+
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_weight="5"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingEnd="@dimen/no_dp"
+                        android:paddingTop="5dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -66,7 +61,8 @@
                                     android:layout_width="@dimen/more_icon_width"
                                     android:layout_alignParentEnd="true"
                                     android:layout_height="@dimen/more_icon_height"
-                                    android:src="@drawable/ic_expand_more"/>
+                                    android:src="@drawable/ic_expand_more"
+                                    android:contentDescription="@string/more_post_menu"/>
                             </RelativeLayout>
                         </LinearLayout>
                         <LinearLayout
@@ -85,7 +81,6 @@
                                 tools:text="@string/category"/>
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -115,7 +110,8 @@
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
                         android:maxHeight="@dimen/post_image_max_height"
-                        android:layout_marginBottom="@dimen/extra_small_margin"/>
+                        android:layout_marginBottom="@dimen/extra_small_margin"
+                        android:contentDescription="@string/post_image_description"/>
 
                 </RelativeLayout>
                 <TextView
@@ -163,7 +159,8 @@
                             android:src="@drawable/ic_dislike"
                             android:layout_marginStart="@dimen/small_margin"
                             android:layout_marginEnd="@dimen/no_dp"
-                            android:id="@+id/hand_logo" />
+                            android:id="@+id/hand_logo"
+                            android:contentDescription="@string/dislike_description"/>
                         <TextView
                             android:id="@+id/post_dislikes"
                             android:layout_width="wrap_content"
@@ -202,7 +199,8 @@
                             android:layout_height="@dimen/interaction_icon_size"
                             android:src="@drawable/ic_volunteer"
                             android:layout_marginEnd="@dimen/no_dp"
-                            android:id="@+id/volunteer_logo"/>
+                            android:id="@+id/volunteer_logo"
+                            android:contentDescription="@string/volunteer_description"/>
                         <TextView
                             android:id="@+id/post_volunteer"
                             android:layout_width="wrap_content"
@@ -242,7 +240,8 @@
                             android:layout_height="@dimen/interaction_icon_size"
                             android:src="@drawable/ic_money"
                             android:layout_marginEnd="@dimen/no_dp"
-                            android:id="@+id/collaboration_logo" />
+                            android:id="@+id/collaboration_logo"
+                            android:contentDescription="@string/donation_description"/>
                         <TextView
                             android:id="@+id/post_donation"
                             android:layout_width="wrap_content"
@@ -258,5 +257,4 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 </android.support.v7.widget.CardView>

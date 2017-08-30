@@ -16,6 +16,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_margin="@dimen/shape_edge_padding"
             app:srcCompat="@drawable/ic_edit_location_layout"
+            android:contentDescription="@string/edit_icon_description"
             />
         <TextView
             android:id="@+id/dialog_header"
@@ -67,7 +68,8 @@
             android:layout_marginEnd="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin"
             app:srcCompat="@drawable/ic_mode_edit"
-            android:layout_below="@+id/current_location_edit_dialog"/>
+            android:layout_below="@+id/current_location_edit_dialog"
+            android:contentDescription="@string/edit_icon_description"/>
         <EditText
             android:id="@+id/edit_text_location_dialog"
             android:layout_width="match_parent"
@@ -76,8 +78,7 @@
             android:maxLength="50"
             android:layout_below="@+id/current_location_edit_dialog"
             android:layout_toEndOf="@+id/edit_icon"
-            android:textSize="@dimen/text_medium_size"
-            />
+            android:textSize="@dimen/text_medium_size" />
         <EditText
             android:id="@+id/edit_text_feedback"
             android:layout_width="match_parent"

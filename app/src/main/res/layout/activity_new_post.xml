@@ -61,7 +61,8 @@
                 android:scaleType="centerCrop"
                 tools:src="@mipmap/image"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_text" />
+                app:layout_constraintTop_toBottomOf="@+id/post_text"
+                android:contentDescription="@string/upload_image_description" />
 
             <ImageView
                 android:id="@+id/remove_post_image"
@@ -73,7 +74,8 @@
                 android:padding="@dimen/extra_small_margin"
                 android:src="@drawable/ic_close"
                 app:layout_constraintRight_toRightOf="@+id/upload_image_holder"
-                app:layout_constraintTop_toTopOf="@+id/upload_image_holder" />
+                app:layout_constraintTop_toTopOf="@+id/upload_image_holder"
+                android:contentDescription="@string/remove_image_description"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -121,7 +123,8 @@
             android:padding="@dimen/extra_small_margin"
             android:src="@drawable/ic_close"
             android:layout_gravity="center"
-            android:foregroundGravity="center"/>
+            android:foregroundGravity="center"
+            android:contentDescription="@string/remove_note_description"/>
 
     </LinearLayout>
     <View

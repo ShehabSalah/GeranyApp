@@ -12,7 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/login_bg"/>
+            android:src="@mipmap/login_bg"
+            android:contentDescription="@string/cover_description"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/profile_dialog_header_size">
@@ -22,6 +23,7 @@
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/shape_edge_padding"
                 app:srcCompat="@drawable/ic_close"
+                android:contentDescription="@string/close_profile"
                 />
         </RelativeLayout>
     </FrameLayout>
@@ -34,6 +36,7 @@
         app:civ_border_color="@color/appBackground"
         app:civ_border_width="2dp"
         android:layout_marginTop="@dimen/profile_dialog_pic_margin"
+        android:contentDescription="@string/profile_pic_description"
         />
     <TextView
         android:id="@+id/username_profile"
@@ -64,7 +67,8 @@
                 android:layout_height="@dimen/icon_size"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_call"/>
+                android:src="@drawable/ic_call"
+                android:contentDescription="@string/call_description"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/mail_container"
@@ -78,7 +82,8 @@
                 android:layout_height="@dimen/icon_size"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_mail"/>
+                android:src="@drawable/ic_mail"
+                android:contentDescription="@string/mail_description"/>
 
         </RelativeLayout>
 

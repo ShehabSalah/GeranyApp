@@ -25,7 +25,8 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/profile"
                 app:civ_border_color="@color/appBackground"
-                app:civ_border_width="@dimen/post_border_size" />
+                app:civ_border_width="@dimen/post_border_size"
+                android:contentDescription="@string/profile_pic_description"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -61,7 +62,8 @@
                             android:layout_height="@dimen/more_icon_height"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_expand_more" />
+                            android:src="@drawable/ic_expand_more"
+                            android:contentDescription="@string/more_feedback_menu"/>
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
